@@ -45,8 +45,11 @@ cat("Date of greatest number of tests: ", covid[index_of_max_tests,]$Date)
 
 
 # Question 2 (25pts): In the data frame 'covid', please add a new column called 'positivityRate' to show the daily positive rate (positiveIncrease/totalTestResultsIncrease)
+positive_inc <- covid$positiveIncrease
+total_test_results_inc <- covid$totalTestResultsIncrease
 
-
+positivity_rate <- positive_inc / total_test_results_inc
+covid["positivityRate"] <- positivity_rate
 
 
 # Question 3 (25pts): Based on the variable you added in Question 2, please plot:
