@@ -2,7 +2,7 @@
 ## Homework 2: Intro to R and Learning to Google
 ## University of Colorado, Boulder
 
-## Your First Name, Your Last Name
+## Elliot Whitehead
 
 ## What to submit: your R script (this file) and your plots (either as jpgs or copy and pasted into a word file)
 
@@ -20,19 +20,26 @@
 # totalTestResults: accumulative number of test conducted till that day
 # totalTestResultsIncrease: new tests on each day
 
-
 # Here is the code to load the csv file
 # Note, please first check where the file ColoradoCovidRecent.csv file located. 
 # You may have to set your working directory to that location (where R looks for files by default)
 # before opening the file (you can go to Tools -> GlobalOptions -> General to set the default working directory)
 # OR you can set it with setwd() (see bottom of Introduction_to_R script)
-covid = read.csv('./ColoradoCovidRecent.csv')
+covid = read.csv('lab_02/ColoradoCovidRecent.csv')
 
+# Question 1 (25pts): Please find which date has:
+# 1: the most increased death and 
+index_of_max_deaths <- which.max(covid$deathIncrease)
+cat("Date of greatest increase in deaths:", covid[index_of_max_deaths,]$Date)
 
-# Question 1 (25pts): Please find which date has the most increased death and which date has the most increased positive cases and which date has the most tests
-# Hint: use which.max() to find the row with the maximum for each separately, then use [] to find the dates, and put the results in the comments
-# Include both your code and your answer!
+# 2: which date has the most increased positive cases
+index_of_max_pos_inc <- which.max(covid$positiveIncrease)
+cat("Date of greatest increase in Positive Tests: ", covid[index_of_max_pos_inc,]$Date)
 
+# 3: and which date has the most tests
+index_of_max_tests <- which.max(covid$totalTestResultsIncrease)
+print(index_of_max_tests)
+cat("Date of greatest number of tests: ", covid[index_of_max_tests,]$Date)
 
 
 
