@@ -58,7 +58,17 @@ covid["positivityRate"] <- positivity_rate
 #(a) the daily positivity rate over time
 #(b) the daily deaths over time (this isn't a new variable, it was already there)
 
-ggplot() + geom_line(data=covid, aes(dayNumber, positivityRate)) + ggtitle("COVID Positivty Rate: Sep 01, 2021 to Jan 17, 2022") + xlab("Days Since Sep 1st, 2021") + ylab("Positivity Rate")
+# ggplot() + geom_line(data=covid, aes(dayNumber, positivityRate)) + ggtitle("COVID Positivty Rate: Sep 01, 2021 to Jan 17, 2022") + xlab("Days Since Sep 1st, 2021") + ylab("Positivity Rate") + geom_line(data=covid, aes(dayNumber, covid$deathIncrease/36 ))
+
+y_scaling_factor <- 36
+
+ggplot(covid, aes(x=dayNumber)) +
+  geom_point(aes(y=positivity_rate)) +
+  geom_line(aes(y=deathIncrease / y_scaling_factor))+ 
+  scale_y_continuous(
+    "Positivity Rate",
+    sec.axis = sec_axis(~ . * y_scaling_factor, name="Daily Increase in Deaths")
+  )
 
 
 # Then, in the comments interpret the trends over the time
