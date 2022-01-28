@@ -1,8 +1,10 @@
 ## GEOG3023 Statistics and Geographic Data
-## Homework 2: Intro to R and Learning to Google
+## Homework 2: Intro to R
 ## University of Colorado, Boulder
-
 ## Elliot Whitehead
+
+install.packages("tidyverse")
+library("ggplot2")
 
 ## What to submit: your R script (this file) and your plots (either as jpgs or copy and pasted into a word file)
 
@@ -55,6 +57,10 @@ covid["positivityRate"] <- positivity_rate
 # Question 3 (25pts): Based on the variable you added in Question 2, please plot:
 #(a) the daily positivity rate over time
 #(b) the daily deaths over time (this isn't a new variable, it was already there)
+
+ggplot() + geom_line(data=covid, aes(dayNumber, positivityRate)) + ggtitle("COVID Positivty Rate: Sep 01, 2021 to Jan 17, 2022") + xlab("Days Since Sep 1st, 2021") + ylab("Positivity Rate")
+
+
 # Then, in the comments interpret the trends over the time
 # A few lines of comments can be used to interpret the trends. Remember, to insert a comment use a "#" at the start of the line
 # Hint: Use dayNumber as your X variable in your plot! You can label your x-axis as "days since 9/1/2021"
