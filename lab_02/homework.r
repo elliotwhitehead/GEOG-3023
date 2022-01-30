@@ -5,6 +5,11 @@
 
 install.packages("tidyverse")
 library("ggplot2")
+library(dplyr)
+
+# For Rolling Averages
+# install.packages("zoo")
+# library(zoo)
 
 ## What to submit: your R script (this file) and your plots (either as jpgs or copy and pasted into a word file)
 
@@ -58,17 +63,26 @@ covid["positivityRate"] <- positivity_rate
 #(a) the daily positivity rate over time
 #(b) the daily deaths over time (this isn't a new variable, it was already there)
 
+# TODO: Pair labels and data with matching colors
+# TODO: would be nice to average positivity rate across 7 days.
+
+
 # ggplot() + geom_line(data=covid, aes(dayNumber, positivityRate)) + ggtitle("COVID Positivty Rate: Sep 01, 2021 to Jan 17, 2022") + xlab("Days Since Sep 1st, 2021") + ylab("Positivity Rate") + geom_line(data=covid, aes(dayNumber, covid$deathIncrease/36 ))
 
-y_scaling_factor <- 36
+y_axis_scaling_factor <- 36
 
 ggplot(covid, aes(x=dayNumber)) +
   geom_point(aes(y=positivity_rate)) +
-  geom_line(aes(y=deathIncrease / y_scaling_factor))+ 
+  geom_line(aes(y=deathIncrease / y_axis_scaling_factor), color="darkorange3", size=1.2) +
+  xlab("Days Since Sep 1st, 2021") +
   scale_y_continuous(
-    "Positivity Rate",
-    sec.axis = sec_axis(~ . * y_scaling_factor, name="Daily Increase in Deaths")
-  )
+    "Positivity Rate (%)",
+    sec.axis = sec_axis(~ . * y_axis_scaling_factor, name="Daily Increase in Deaths")
+  ) +
+  theme(panel.background = element_rect(fill = "#EBE9E9")) +
+  theme(axis.title.y = element_text(color="darkorange3", margin = margin(t = 0, r = 15, b = 0, l = 15))) +
+  theme(axis.title.y.right = element_text(color="black", margin = margin(t = 0, r = 15, b = 0, l = 15))) +
+  theme(axis.title.x = element_text(margin = margin(t=15, b=15)))
 
 
 # Then, in the comments interpret the trends over the time
@@ -79,8 +93,6 @@ ggplot(covid, aes(x=dayNumber)) +
 
 
 # Question 4 (25pts): Make a histogram of the daily positivity rate
-# Hint: You'll probably have to search Google to figure this out! 
-# Try Googling: "ggplot how to make histogram"
 # Is the distribution left-skewed, right-skewed, or fairly symmetric? Answer in the comments
 
 
