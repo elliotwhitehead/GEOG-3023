@@ -1,0 +1,374 @@
+---
+title: 'Lab for GEOG 3023: Statistics and Visualizations for Geography'
+author: "FirstName LastName"
+subtitle: 'Lab 3: Data Manipulation and Visualization'
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+
+# Setup the environment
+library(knitr)
+knitr::opts_chunk$set(warning=FALSE, echo=TRUE, eval=TRUE, message=FALSE)
+
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
+
+```
+
+<div class="instructions">
+
+Complete all **Questions**, and submit the finished Rmd and HTML file onto Canvas. Don't forget to change name field in the beginning to your first and last name. 
+
+</div>
+
+# Lab 3 Introduction
+In this lab we explore flights, specifically a random sample of domestic flights that departed from the three major  New York City airport in 2013. We will generate simple graphical and numerical  summaries of data on these flights and explore delay times. As this is a large  data set, along the way you'll also learn the indispensable skills of data  processing and subsetting.
+
+In total, there are 6 Questions in this lab spread throughout the Markdown document. You'll answer the questions with code and text, then "Knit" your file into an HTML, and finally submit the finished Rmd and HTML to Canvas. 
+
+
+Chapters 10 and 13 of *R programming for Data Science* (freely avaiable: https://www.cs.upc.edu/~robert/teaching/estadistica/rprogramming.pdf) will be very helpful to this lab. 
+
+
+# Introduction to R (continued from Lab 2)
+
+This section of the lab will highlight more basic coding and R terminology, files, and libraries we'll be using with in the scope of the class. I use the term basic loosely, as it may take a while to understand what we go over, but ultimately you'll be seeing the contents of this lab in many of the future labs as well in your everyday coding lives.
+
+### The Data Frame
+
+The data frame is a commonly used data structure in statistics and RStudio, and is a key component of this class. The basic structure of a data is in the form of rows and columns. Each row is an observation, or data point. Each column is a variable, which is a measure, feature, or characteristic of that observation. For example, the mtcars dataframe we have already looked at:
+
+```{r}
+data(mtcars)
+head(mtcars)
+```
+
+
+Given the importance of managing data frames, it’s equally as important that we have good tools for dealing with them. In Lab 2, we discussed some tools like the use of [ and $ operators to extract subsets of data frames, and perhaps you've already asked yourself, is there an easier way to do this? The answer is yes, yes there is. We can even do more complex manipulations like filtering, re-ordering, and collapsing, which can often be even more tedious operations and have un-intuitive syntax associated with it in base R. The **dplyr** package (which we'll load in a moment) is designed to mitigate a lot of these problems, and provides a highly optimized set of routines specific to dealing with data frames.
+
+### Libraries
+
+Libraries are the essence of coding, and the knowledge of libraries. The main difference in expert coders versus new coders is the practice and memorization of these libraries. We'll go over the implementation now, along with the contents and use of a library later on in this lab. There are different ways to install libraries such as through github, but the main way we will be doing this is by using the syntax `install.packages("library_name_here")`. It's best to install a library from the command line, as once a library has been installed, there is no need to re-install it. A package does have to be implemented once per new script. Below is an example of implementing the **dplyr** library after it's been installed:
+
+```{r}
+library(dplyr)
+```
+
+It's usually best to implement libraries in the beginning of R Code. If a function is called before the library is implemented, the R Chunk will not knit and you'll get a confusing error.
+
+### Dplyr "Verbs"
+
+In this lab we will introduce a couple packages handy for data maniputlations and use them to explore flights, specifically a random sample of domestic flights that departed from the three major  New York City airport in 2013. We will generate simple graphical and numerical  summaries of data on these flights and explore delay times. As this is a large  data set, along the way you'll also learn the indispensable skills of data  processing and sub-setting. We'll be exploring the **dplyr** package and some of it's more commonly used functions.
+
+- `filter()`: extract a subset of rows from a data frame based on logical conditions
+- `arrange()`:reorder rows of a data frame
+- `select()`: return a subset of the columns of a data frame, using a flexible notation
+- `rename()`: rename variables in a data frame
+- `mutate()`: add new variables/columns or transform existing variables
+- `summarise()`: generate summary statistics of different variables in the data frame and display them in a table
+- `%>%`: the “pipe” operator is used to connect multiple verb actions together into a pipeline
+
+
+
+# Lab Overview: The Data
+
+The [Bureau of Transportation Statistics](http://www.rita.dot.gov/bts/about/) 
+(BTS) is a statistical agency that is a part of the Research and Innovative 
+Technology Administration (RITA). As its name implies, BTS collects and makes 
+available transportation data, such as the flights data we will be working with 
+in this lab.
+
+We begin by loading the `nycflights` data frame. Type the following in your console
+to load the data:
+
+```{r load-data}
+
+# you might need to change to the correct folder
+nycflights <- read.csv('./nycflights.csv')
+```
+
+The data frame containing `r nrow(nycflights)` flights that shows up in your 
+workspace is a *data matrix*, with each row representing an *observation* and each 
+column representing a *variable*. R calls this data format a **data frame**, which is 
+a term that will be used throughout the labs.
+
+To view the names of the variables, type the command
+
+```{r names}
+names(nycflights)
+```
+
+This returns the names of the variables in this data frame. The **codebook**
+(description of the variables) is included below. This information can also be
+found in the help file for the data frame which can be accessed by typing
+`?nycflights` in the console.
+
+- `year`, `month`, `day`: Date of departure
+- `dep_time`, `arr_time`: Departure and arrival times, local timezone.
+- `dep_delay`, `arr_delay`: Departure and arrival delays, in minutes. Negative times represent early departures/arrivals.
+- `carrier`: Two letter carrier abbreviation.
+    + `9E`:           Endeavor Air Inc.
+    + `AA`:      American Airlines Inc.
+    + `AS`:        Alaska Airlines Inc.
+    + `B6`:             JetBlue Airways
+    + `DL`:        Delta Air Lines Inc.
+    + `EV`:    ExpressJet Airlines Inc.
+    + `F9`:      Frontier Airlines Inc.
+    + `FL`: AirTran Airways Corporation
+    + `HA`:      Hawaiian Airlines Inc.
+    + `MQ`:                   Envoy Air
+    + `OO`:       SkyWest Airlines Inc.
+    + `UA`:       United Air Lines Inc.
+    + `US`:             US Airways Inc.
+    + `VX`:              Virgin America
+    + `WN`:      Southwest Airlines Co.
+    + `YV`:          Mesa Airlines Inc.
+- `tailnum`: Plane tail number
+- `flight`: Flight number
+- `origin`, `dest`: Airport codes for origin and destination. (Google can help
+you with what code stands for which airport.)
+- `air_time`: Amount of time spent in the air, in minutes.
+- `distance`: Distance flown, in miles.
+- `hour`, `minute`: Time of departure broken in to hour and minutes.
+
+A very useful function for taking a quick peek at your data frame, and viewing
+its dimensions and data types is `str`, which stands for **str**ucture.
+
+```{r str}
+str(nycflights)
+```
+
+The `nycflights` data frame is a massive trove of information. It has data from 32730 flights!! Let's think about 
+some questions we might want to answer with these data:
+
+- We might want to find out how delayed flights headed to a particular 
+destination tend to be. 
+- We might want to evaluate how departure delays vary over months. 
+- Or we might want to determine which of the three major NYC airports has a better 
+on time percentage for departing flights.
+We will use some of these functions in this lab, and learn about others in a 
+future lab.
+
+# Lab Overview: Analysis
+
+Today, we're going to focus on analyze flight departure and arrival time delays. 
+
+We'll analyze the data in 2 phases, answering questions at each step.
+
+Part 1: Analyze the entire sample all together
+
+Part 2: Analyze differences in delays between different airports
+
+We'll be using ggplot to visualize our data and dplyr to help process and analyze it. Let's get started!
+
+# Assignment Part 1: Departure and Arrival Delays
+
+First, we'll make a histogram of departure delays
+
+```{r}
+library(ggplot2) # first we load the library
+
+ggplot(nycflights) + aes(dep_delay) + geom_histogram(binwidth=15) +
+  ggtitle("Departure Delay Histogram") +
+  xlab("Departure Delay (minutes)")
+```
+
+While that was helpful, it's hard to see if there are outliers. Next we'll make a boxplot of the same data: 
+
+```{r}
+ggplot(nycflights) + aes(dep_delay) + geom_boxplot() +
+  ggtitle("Departure Delay Boxplot") +
+  xlab("Departure Delay (minutes)") +
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank()) # These last two lines remove the unnecessary y-axis ticks
+```
+There are many outliers in this dataset! Each dot beyond the "whiskers" of the boxplot represents an outlier. 
+
+To get a better sense of our data, we can calculate various summary statistics:
+
+```{r}
+library(moments) # The moments package has the skewness and kurtosis functions
+mean(nycflights$dep_delay)
+median(nycflights$dep_delay)
+sd(nycflights$dep_delay)
+IQR(nycflights$dep_delay)
+min(nycflights$dep_delay)
+max(nycflights$dep_delay)
+skewness(nycflights$dep_delay)
+kurtosis(nycflights$dep_delay)
+```
+
+
+**Q1: (20 pts)** Create a boxplot and and histogram of arrival delays (arr_delay). Be sure to title your plots and label the x-axis
+```{r}
+
+# Write your code here to make the boxplot and histogram
+
+```
+
+**Q2: (20 pts)** Based on the plots you made in **Q1** and any additional statistics you want to calculate (e.g. mean, median, min, max, sd, etc.), describe the shape of the distribution in a couple sentences, answering these questions: What is the mean arrival delay? Are there outliers and if so are they larger or smaller than the other observations? Is the distribution skewed right, left, or symmetric?
+
+```{r}
+
+# Write your code here to calculate the summary statistics
+
+```
+
+Write your description of the shape here:  
+
+
+# Assignment Part 2: Analyze differences in delays between different airports
+
+Let's say you're booking a flight out of NYC and you want to know what airport has the best chance of an on-time departure.
+
+We can use dplyr to filter the data by airport. To show you how to make the comparison between NYC airports, we're first going to show you how we'd compare arrival delays between flights going to Denver and going to San Francisco using the "dest" categorical variable. Then you'll do a similar analysis to compare departure delays between JFK, EWR, and LGA airports (the three major airports in NYC)
+
+## Example: Denver vs San Francisco
+
+### The "filter" function
+If we want to focus on departure delays of flights headed to Denver (DEN) only, we need to
+first `filter` the data for flights headed to DEN (`dest == "DEN"`) and then make
+a histogram of only departure delays of only those flights. 
+
+```{r rdu-flights-hist}
+den_flights <- nycflights %>% 
+  filter(dest == "DEN")
+
+ggplot(den_flights) + aes(arr_delay) + geom_histogram(binwidth=15) +
+  ggtitle("Arrival Delay Histogram for Flights to Denver") +
+  xlab("Departure Delay (minutes)")
+```
+
+Let's decipher these lines of code:
+
+- Line 1: Take the `nycflights` data frame, `filter` for flights headed to DEN, and 
+save the result as a new data frame called `den_flights`.
+    + `==` means "if it's equal to".
+    + `DEN` is in quotation marks since it is a character string.
+    + The `%>%` symbol is called the "pipe" operator. It connects data and commands in dplyr
+- Line 2: Basically the same `ggplot` command from earlier for making a histogram, 
+except that it uses the data frame for flights headed to DEN instead of all
+flights.
+
+<div class="boxedtext">
+**Logical operators: ** Filtering for certain observations (e.g. flights from a 
+particular airport) is often of interest in data frames where we might want to 
+examine observations with certain characteristics separately from the rest of 
+the data. To do so we use the `filter` function and a series of 
+**logical operators**. The most commonly used logical operators for data 
+analysis are as follows:
+
+- `==` means "equal to"
+- `!=` means "not equal to"
+- `>` or `<` means "greater than" or "less than"
+- `>=` or `<=` means "greater than or equal to" or "less than or equal to"
+</div>
+
+
+### The "summarise" function
+
+We can also obtain numerical summaries for these flights:
+
+```{r den-flights-summ}
+den_flights %>%
+  summarise(mean_arr_delay = mean(arr_delay), sd_arr_delay = sd(arr_delay), n = n())
+```
+
+Note that in the `summarise` function we created a list of two elements. The 
+names of these elements are user defined, like `mean_dd`, `sd_dd`, `n`, and 
+you could customize these names as you like (just don't use spaces in your 
+names). Calculating these summary statistics also require that you know the 
+function calls. Note that `n()` reports the sample size. 
+
+Notice that this time we're not saving our result as a new object, but just 
+letting it print out so we can view it!
+
+**Q3: (10 pts)** Based on the output above, how many flights in our sample were going to Denver? Choose the correct answer:
+
+* 45 
+* 736 
+* 1345  
+* 32730 
+
+### The "group_by" function to compare Denver and San Francisco
+
+Dplyr allows us to filter on multiple conditions. In this case, we'll get all flights
+to Denver OR to SFO. To do this, we use a `|` symbol, which means "OR" in the filter command:
+
+*Note:* You won't have to use the | in your code for this homework. 
+
+```{r den-vs-sfo}
+den_sfo_flights <- nycflights %>%
+  filter( (dest=="DEN") | (dest=="SFO") )
+```
+
+Now that we have a dataframe (den_sfo_flights) with just flights to Denver and San Francisco,
+we can use the group_by command in combination with the summarise command to compare them: 
+```{r}
+den_sfo_flights %>%
+  group_by(dest) %>%
+  summarise(mean_arr_delay = mean(arr_delay), 
+            q75_arr_delay = quantile(arr_delay, 0.75),
+            sd_arr_delay = sd(arr_delay), 
+            n = n())
+
+```
+Here we've calculated the mean, 75th quantile, and standard deviation for all flights going to Denver or San Francisco
+
+We can also make boxplots to compare the arrival delays between airports: 
+```{r}
+ggplot(den_sfo_flights) + aes(x=dest, y=arr_delay, fill=dest) + geom_boxplot()
+
+```
+
+**Q4: (10 pts)** Based on the summary statistics and plots above, which airport would you rather be flying to? Why?
+
+*Your Answer:*
+
+## Now you're turn: Comparing departure delays between NYC airports
+
+Now we'll walk you through comparing departure delays between the origin airports.
+
+There are only three "origin" airports in our dataset:
+
+JFK: John F Kennedy Airport
+EWR: Newark Liberty Airport
+LGA: LaGuardia Airport
+
+These are the three major airports in NYC. 
+
+This is basically the same analysis as we just did for DEN vs SFO! 
+But this time we're comparing between `origin` instead of `dest`
+and we're looking at `dep_delay` instead of `arr_delay`
+
+**Q5: (20 pts)** Make side-by-side boxplots comparing the three NYC airports
+
+```{r}
+
+# Write your code here
+
+```
+
+
+**Q6: (20 pts)** Write code to calculate which of the three NYC airports has the *lowest* mean departure delay?
+
+*Hint* Start with the nycflights dataframe, then use the group_by() command on the `origin` variable,
+and then finally use the summarise() command to calculate the mean. Walk through the Denver vs San Francisco example
+if you're unsure
+
+```{r}
+
+# Write your code here
+
+```
+
+*Your answer:*
+*JFK
+*EWR
+*LGA 
+
+
+Done! Remember to knit this file and submit the .rmd file AND your knitted .html

@@ -1,0 +1,72 @@
+---
+title: "Introduction to RMarkdown"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(out.width='0.8\\textwidth', fig.align='center',fig.width=10, fig.height=6, fig.path='Figs/',  warning=FALSE, echo=TRUE, eval=TRUE, message=FALSE)
+```
+
+
+## Working with R Markdown
+
+
+This is an R Markdown document. The advantage of RMarkdown is that you can embed R codes and the outputs into regular texts and convert it into commonly used document files that are used, including HTML, PDF, MS Word and Power Point documents. Actually for my slides used in the class, I generated most of them using RMarkdown. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+The most important thing for this class is to know how to embed the R codes into the regular texts. It is fairly straightforward. You can simply click **Insert** button and choose R. 
+
+![Insert a R code chunk](./insertMarkdown.png)
+
+
+Or as you can see in the above example, you can place your code with in a R code chunk indicating by three consective back-tick symbols. In the parenthesis in the above example, 'r' indicating we are using R language (other languages like Python can actually be used in RStudio too), 'cars' indicates the label for this code chunk and the label is not required (if left out, RStudio will automatically generate one). 
+
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. There are other options that you can use to control how the R and R output displayed in the final documents:
+
+`echo=FALSE` Don't include the code
+
+`results="hide` Don't include the output
+
+`include=FALSE` Don't show code or output
+
+`eval=FALSE` Don't evaluate the code at all
+
+`warning=FALSE` Don't show R warnings
+
+`message=FALSE` Don't show R messages
+
+`fig.width=#` Width of figure
+
+`fig.height=#` Height of figure
+
+`fig.path="Figs/"` Path for figure files
+
+
+
+## Future labs and homeworks
+
+Now click the **Knit** button and choose *Knit to HTML*. You will see the Rmd file is rendered as a html file that are much more pleasant and easier to read. A html file with the same name as the Rmd file (PartI-IntroRmd for this file) should be saved in your working folder (type `getwd()` in the Console to know what your working directory). Please try to find it.
+
+Now you have some idea how to edit an Rmd file. In the future lab of this class, most of the lab materials and instructions will be distributed as Rmd files, and you will return the finished Rmd and the rendered html file.
+
+
+
+
