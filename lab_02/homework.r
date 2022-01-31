@@ -7,6 +7,10 @@ install.packages("tidyverse")
 library("ggplot2")
 library(dplyr)
 
+# Install Moments for Skewness
+install.packages("moments")
+library(moments)
+
 # For Rolling Averages
 # install.packages("zoo")
 # library(zoo)
@@ -87,7 +91,13 @@ ggplot(covid, aes(x=dayNumber)) +
 
 # Then, in the comments interpret the trends over the time
 
-# As the data moves toward 
+# As the data moves towards the holidays and into Winter, the number of daily 
+# deaths increase, and generally so does the positivity rate.
+# The highest recorded positivity rate occurred on January 08, after many
+# people returned from Holiday travel and being at large gathering and crowded
+# transportation hubs. following the increase in positivity rate is a noticeable
+# uptick in the number of deaths reported daily, which is not surprising. 
+
 
 
 
@@ -95,7 +105,10 @@ ggplot(covid, aes(x=dayNumber)) +
 # Question 4 (25pts): Make a histogram of the daily positivity rate
 # Is the distribution left-skewed, right-skewed, or fairly symmetric? Answer in the comments
 
+hist(covid$positivityRate, xlab="Positivity Rate", main="Histogram of Daily Positivity Rate")
+cat("Daily Positivity Rate Skewness: ", skewness(covid$positivityRate))
 
+# with a skewness value of 3.191539, the data are right-skewed. 
 
 
 
