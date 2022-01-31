@@ -72,22 +72,22 @@ covid["positivityRate"] <- positivity_rate
 y_axis_scaling_factor <- 36
 
 ggplot(covid, aes(x=dayNumber)) +
-  geom_point(aes(y=positivity_rate)) +
+  geom_point(aes(y=positivity_rate), color="#3581B8") +
   geom_line(aes(y=deathIncrease / y_axis_scaling_factor), color="darkorange3", size=1.2) +
   xlab("Days Since Sep 1st, 2021") +
   scale_y_continuous(
     "Positivity Rate (%)",
-    sec.axis = sec_axis(~ . * y_axis_scaling_factor, name="Daily Increase in Deaths")
+    sec.axis = sec_axis(~ . * y_axis_scaling_factor, name="Daily Deaths")
   ) +
   theme(panel.background = element_rect(fill = "#EBE9E9")) +
   theme(axis.title.y = element_text(color="darkorange3", margin = margin(t = 0, r = 15, b = 0, l = 15))) +
-  theme(axis.title.y.right = element_text(color="black", margin = margin(t = 0, r = 15, b = 0, l = 15))) +
+  theme(axis.title.y.right = element_text(color="#3581B8", margin = margin(t = 0, r = 15, b = 0, l = 15))) +
   theme(axis.title.x = element_text(margin = margin(t=15, b=15)))
 
 
 # Then, in the comments interpret the trends over the time
-# A few lines of comments can be used to interpret the trends. Remember, to insert a comment use a "#" at the start of the line
-# Hint: Use dayNumber as your X variable in your plot! You can label your x-axis as "days since 9/1/2021"
+
+# As the data moves toward 
 
 
 
