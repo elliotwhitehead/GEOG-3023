@@ -72,8 +72,8 @@ covid["positivityRate"] <- positivity_rate
 y_axis_scaling_factor <- 36
 
 ggplot(covid, aes(x=dayNumber)) +
-  geom_point(aes(y=positivity_rate), color="#3581B8") +
   geom_line(aes(y=deathIncrease / y_axis_scaling_factor), color="darkorange3", size=1.2) +
+  geom_point(aes(y=positivity_rate), color="#3581B8") +
   xlab("Days Since Sep 1st, 2021") +
   scale_y_continuous(
     "Positivity Rate (%)",
