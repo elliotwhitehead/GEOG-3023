@@ -1,6 +1,6 @@
 ---
 title: 'Lab for GEOG 3023: Statistics and Visualizations for Geography'
-author: "FirstName LastName"
+author: "Elliot Whitehead"
 subtitle: 'Lab 3: Data Manipulation and Visualization'
 output:
   html_document: default
@@ -328,7 +328,7 @@ ggplot(den_sfo_flights) + aes(x=dest, y=arr_delay, fill=dest) + geom_boxplot()
 
 *Your Answer:*
 
-## Now you're turn: Comparing departure delays between NYC airports
+## Now your turn: Comparing departure delays between NYC airports
 
 Now we'll walk you through comparing departure delays between the origin airports.
 
