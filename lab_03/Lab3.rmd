@@ -25,7 +25,7 @@ Complete all **Questions**, and submit the finished Rmd and HTML file onto Canva
 </div>
 
 # Lab 3 Introduction
-In this lab we explore flights, specifically a random sample of domestic flights that departed from the three major  New York City airport in 2013. We will generate simple graphical and numerical  summaries of data on these flights and explore delay times. As this is a large  data set, along the way you'll also learn the indispensable skills of data  processing and subsetting.
+In this lab we explore flights, specifically a random sample of domestic flights that departed from the three major  New York City airport in 2013. We will generate simple graphical and numerical  summaries of data on these flights and explore delay times. As this is a large data set, along the way you'll also learn the indispensable skills of data  processing and subsetting.
 
 In total, there are 6 Questions in this lab spread throughout the Markdown document. You'll answer the questions with code and text, then "Knit" your file into an HTML, and finally submit the finished Rmd and HTML to Canvas. 
 
@@ -61,7 +61,7 @@ It's usually best to implement libraries in the beginning of R Code. If a functi
 
 ### Dplyr "Verbs"
 
-In this lab we will introduce a couple packages handy for data maniputlations and use them to explore flights, specifically a random sample of domestic flights that departed from the three major  New York City airport in 2013. We will generate simple graphical and numerical  summaries of data on these flights and explore delay times. As this is a large  data set, along the way you'll also learn the indispensable skills of data  processing and sub-setting. We'll be exploring the **dplyr** package and some of it's more commonly used functions.
+In this lab we will introduce a couple packages handy for data manipulations and use them to explore flights, specifically a random sample of domestic flights that departed from the three major  New York City airport in 2013. We will generate simple graphical and numerical summaries of data on these flights and explore delay times. As this is a large data set, along the way you'll also learn the indispensable skills of data  processing and sub-setting. We'll be exploring the **dplyr** package and some of it's more commonly used functions.
 
 - `filter()`: extract a subset of rows from a data frame based on logical conditions
 - `arrange()`:reorder rows of a data frame
@@ -141,14 +141,13 @@ its dimensions and data types is `str`, which stands for **str**ucture.
 str(nycflights)
 ```
 
-The `nycflights` data frame is a massive trove of information. It has data from 32730 flights!! Let's think about 
-some questions we might want to answer with these data:
+The `nycflights` data frame is a massive trove of information. It has data from 32730 flights!! Let's think about some questions we might want to answer with these data:
 
 - We might want to find out how delayed flights headed to a particular 
 destination tend to be. 
 - We might want to evaluate how departure delays vary over months. 
 - Or we might want to determine which of the three major NYC airports has a better 
-on time percentage for departing flights.
+on-time percentage for departing flights.
 We will use some of these functions in this lab, and learn about others in a 
 future lab.
 
@@ -191,14 +190,14 @@ To get a better sense of our data, we can calculate various summary statistics:
 
 ```{r}
 library(moments) # The moments package has the skewness and kurtosis functions
-mean(nycflights$dep_delay)
-median(nycflights$dep_delay)
-sd(nycflights$dep_delay)
-IQR(nycflights$dep_delay)
-min(nycflights$dep_delay)
-max(nycflights$dep_delay)
-skewness(nycflights$dep_delay)
-kurtosis(nycflights$dep_delay)
+sprintf("mean: %f", mean(nycflights$dep_delay))
+sprintf("median: %f", median(nycflights$dep_delay))
+sprintf("sd: %f", sd(nycflights$dep_delay))
+sprintf("IQR: %f", IQR(nycflights$dep_delay))
+sprintf("min: %f", min(nycflights$dep_delay))
+sprintf("max: %f", max(nycflights$dep_delay))
+sprintf("skewness: %f", skewness(nycflights$dep_delay))
+sprintf("kurtosis: %f", kurtosis(nycflights$dep_delay))
 ```
 
 
