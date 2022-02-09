@@ -1,8 +1,8 @@
 ---
 title: "Introduction to RMarkdown"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(out.width='0.8\\textwidth', fig.align='center',fig.width=1
 ## Working with R Markdown
 
 
-This is an R Markdown document. The advantage of RMarkdown is that you can embed R codes and the outputs into regular texts and convert it into commonly used document files that are used, including HTML, PDF, MS Word and Power Point documents. Actually for my slides used in the class, I generated most of them using RMarkdown. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This is an R Markdown document. The advantage of RMarkdown is that you can embed R code and the outputs into regular text and convert it into commonly used document files, including HTML, PDF, MS Word and Power Point documents. Actually for my slides used in the class, I generated most of them using RMarkdown. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
@@ -23,9 +23,6 @@ summary(cars)
 ```
 
 The most important thing for this class is to know how to embed the R codes into the regular texts. It is fairly straightforward. You can simply click **Insert** button and choose R. 
-
-![Insert a R code chunk](./insertMarkdown.png)
-
 
 Or as you can see in the above example, you can place your code with in a R code chunk indicating by three consective back-tick symbols. In the parenthesis in the above example, 'r' indicating we are using R language (other languages like Python can actually be used in RStudio too), 'cars' indicates the label for this code chunk and the label is not required (if left out, RStudio will automatically generate one). 
 
@@ -42,7 +39,7 @@ plot(pressure)
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. There are other options that you can use to control how the R and R output displayed in the final documents:
 
 `echo=FALSE` Don't include the code
-
+org
 `results="hide` Don't include the output
 
 `include=FALSE` Don't show code or output
