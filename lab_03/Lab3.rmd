@@ -363,8 +363,15 @@ and we're looking at `dep_delay` instead of `arr_delay`
 **Q5: (20 pts)** Make side-by-side boxplots comparing the three NYC airports
 
 ```{r}
+nycflights %>%
+  group_by(origin) %>%
+  summarise(dep_delay = mean(dep_delay), 
+            q75_dep_delay = quantile(dep_delay, 0.75),
+            sd_dep_delay = sd(dep_delay), 
+            n = n())
 
-# Write your code here
+ggplot(nycflights) + aes(x=origin, y=dep_delay, fill=origin) + geom_boxplot()
+
 
 ```
 
@@ -377,14 +384,14 @@ if you're unsure
 
 ```{r}
 
-# Write your code here
+nycflights %>%
+  group_by(origin) %>%
+  summarise(dep_delay = mean(dep_delay))
 
 ```
 
 *Your answer:*
-*JFK
-*EWR
-*LGA 
+**LGA **
 
 
 Done! Remember to knit this file and submit the .rmd file AND your knitted .html
