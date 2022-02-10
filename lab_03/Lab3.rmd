@@ -233,7 +233,7 @@ sprintf("Kurtosis: %f", kurtosis(nycflights$arr_delay))
 
 Write your description of the shape here:
 
-**The data are heavily skewed to the right (skewness of 3.03) and highly leptokurtic (kurtosis of 16.82). The large majority of flights arrive slightly early, however the data are heavily skewed by a fair number of flights which arrive very, very late (max of 7.4 hours). **
+**The data are heavily skewed to the right (skewness of 3.03) and leptokurtic (kurtosis of 16.82). The large majority of flights arrive slightly early, however the data are heavily skewed by a fair number of flights which arrive very, very late (max of 7.4 hours). Even though the vast majority of flights arrive early, the outliers pull the mean out to nearly 7 minutes late. **
 
 
 # Assignment Part 2: Analyze differences in delays between different airports
@@ -304,10 +304,7 @@ letting it print out so we can view it!
 
 **Q3: (10 pts)** Based on the output above, how many flights in our sample were going to Denver? Choose the correct answer:
 
-* 45 
-* 736 
-* 1345  
-* 32730 
+* ***736***
 
 ### The "group_by" function to compare Denver and San Francisco
 
@@ -343,6 +340,9 @@ ggplot(den_sfo_flights) + aes(x=dest, y=arr_delay, fill=dest) + geom_boxplot()
 **Q4: (10 pts)** Based on the summary statistics and plots above, which airport would you rather be flying to? Why?
 
 *Your Answer:*
+
+**It would be better to fly SFO, as it generally has less arrival times delays**
+
 
 ## Now your turn: Comparing departure delays between NYC airports
 
