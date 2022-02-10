@@ -225,10 +225,15 @@ ggplot(nycflights) + aes(arr_delay) + geom_histogram() +
 ```{r}
 
 # Write your code here to calculate the summary statistics
+summary(nycflights$arr_delay)
+sprintf("Skewness: %f", skewness(nycflights$arr_delay))
+sprintf("Kurtosis: %f", kurtosis(nycflights$arr_delay))
 
 ```
 
-Write your description of the shape here:  
+Write your description of the shape here:
+
+**The data are heavily skewed to the right (skewness of 3.03) and highly leptokurtic (kurtosis of 16.82). The large majority of flights arrive slightly early, however the data are heavily skewed by a fair number of flights which arrive very, very late (max of 7.4 hours). **
 
 
 # Assignment Part 2: Analyze differences in delays between different airports
