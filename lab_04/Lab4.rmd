@@ -1,0 +1,352 @@
+---
+title: "Lab for GEOG 3023: Statistics for Geography"
+subtitle: "Lab 4: Statistical Relationships in R" 
+author: FirstName LastName
+output: 
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+
+# Setup the environment
+library(knitr)
+knitr::opts_chunk$set(fig.align='center',fig.width=10, fig.height=6, fig.path='Figs/',  warning=FALSE, echo=TRUE, eval=TRUE, message=FALSE)
+
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
+
+```
+
+
+
+Complete all **5 Questions**, and submit the finished Rmd and knitted HTML file onto Canvas. Don't forget to change name field in 
+the beginning to your first and last name. 
+
+This lab is based on a lab developed by Dr. Matthew Crump at CUNY Brooklyn (https://crumplab.github.io/statisticsLab/)
+
+
+# Introduction
+
+
+In lecture, we have been discussing the idea of correlation. This is the idea that two things that we measure can be 
+somehow related to one another. For example, your personal happiness, which we could try to measure say with a questionnaire,
+might be related to other things in your life that we could also measure, such as number of close friends, yearly salary, 
+how much chocolate you have in your bedroom, or how many times you have said the word Nintendo in your life. Some of the 
+relationships that we can measure are meaningful, and might reflect a causal relationship where one thing causes a change 
+in another thing. Some of the relationships are spurious, and do not reflect a causal relationship.
+
+In this lab you will learn how to compute correlations between two variables in 'R', and then ask some questions about the correlations that you observe.
+
+## Learning Goals
+
+  1.  Compute Pearson’s r between two variables with R
+  2.  Simple linear regression with R
+  3.  Discuss the possible meaning of correlations that you observe
+
+
+## Getting started
+
+### Load packages
+
+In this lab we will continue use the 'dplyr' package used for the last week. 
+
+Let's load the packages:
+
+```{r load-packages, message=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+### Data
+
+We use data from the [World Happiness Report](https://worldhappiness.report/). The World Happiness Report is a 
+landmark survey of the state of global happiness that ranks 166 countries by how happy their citizens perceive themselves to be.  
+A csv of the data for the year 2021 is included in the lab materials. The data includes annual survey results 
+from the year 2008 to 2020 for each of the 166 countries. Beware that there is missing values ('NA') for some of the columns.
+
+Let's load the data:
+
+```{r, echo=T, results=F}
+
+# Make sure the data are in the right folder
+# 
+whr_data <- read.csv('./WHR2021.csv')
+
+# Now browse the data and see what columns the data have. The names of the column should explain themselves 
+
+names(whr_data)
+
+# Show the first few rows of the data frame.
+head(whr_data)
+
+```
+
+You should be able to see that there is data for many different countries, across a few different years. 
+There are lots of different kinds of measures, and each are given a name that should explain themselves. 
+You can find out more info here: https://worldhappiness.report/faq/
+
+
+# Getting Familiar with the Data
+
+## Life Satisfaction over time
+
+One of the most interesting columns is the ``Life.Ladder'' variable. This is a descriptor of life satisfaction and happiness. 
+From the WHR website: ``This is called the Cantril ladder: it asks respondents to think of a ladder, with the best possible 
+life for them being a 10, and the worst possible life being a 0. They are then asked to rate their own current lives on that 0 to 10 scale.'' 
+Then WHR calculates the mean rating for each country and that's the value you see in ``Life.Ladder''
+
+To start, let's explore the changes of the Life.Ladder over the years for the United States.
+
+```{r}
+
+# By using dplyr, we can easily select the rows and columns in the dataframe that we want
+# Then save it to a new dataframe called "whr_data_us"
+whr_data_us <- whr_data %>%
+  select(country, year, Life.Ladder) %>% #select the interested columns
+  filter(country == 'United States')  # only choose United States
+
+# Plot
+ggplot(whr_data_us) + aes(x=year, y=Life.Ladder) + geom_line() +
+  ggtitle("US Mean Life.Ladder, 2008 - 2020")
+
+```
+
+## Life Satisfaction over time: comparing countries
+
+It looks like life satisfaction has dropped a bit over the last decade in the United States, but seen a small rebound
+in the last few years. Let's look at another country to compare between the two. In this case, we'll use Germany
+
+```{r}
+# By using dplyr, we can easily select the rows and columns in the dataframe that we want
+# Then we save it to a new dataframe called "whr_data_us_germany"
+whr_data_us_germany <- whr_data %>%
+  select(country, year, Life.Ladder) %>% #select the interested columns
+  filter(country == 'United States' | country == 'Germany')  # choose US AND Germany
+
+# Plot, using "country" as the color aesthetic
+ggplot(whr_data_us_germany) + aes(x=year, y=Life.Ladder, color=country) + geom_line() +
+  ggtitle("Mean Life.Ladder, 2008 - 2020")
+
+
+```
+
+
+### Your turn: 
+
+For question 1, you'll look at the ``Freedom.to.make.life.choices'' variable but for
+two DIFFERENT countries (NOT the ones above)
+
+**Q1: (15 pts)** Similar to the analysis above, choose two new countries you're interested
+in and make a line plot comparing their ``Freedom.to.make.life.choices'' variable over time
+
+Hint: To see what countries are options, click on the ``whr_data'' object in the Environment pane (top right)
+Notice that not all countries have all years, so pick two countries that have data for the whole time period
+
+```{r}
+# First, use select() and filter() to create a new dataframe that has only the
+# countries and columns you're interested in
+
+
+# Then, plot!
+
+
+```
+
+# Calculating Correlation
+
+Does a countries measure for “Freedom.to.make.life.choices” correlate with that countries measure for "Life.Ladder"?
+
+Let’s find out. We calculate the correlation, and then we make the scatter plot.
+
+```{r}
+
+cor(whr_data$Freedom.to.make.life.choices, whr_data$Life.Ladder)
+ggplot(whr_data) + aes(x=Freedom.to.make.life.choices, y=Life.Ladder) + geom_point()
+
+```
+
+What happened here? We can see some dots, but the correlation was NA (meaning missing values or undefined). 
+This occurred because there are some missing data points in the data. We can remove all the rows with missing 
+data first, then do the correlation. We will do this a couple steps, first creating our own data.frame with 
+only the numbers we want to analyse. Similar with the previous case, we can select the columns we want to 
+keep using `select()`. Then we use `filter()` to remove the rows with NAs (! means NOT, so !is.na() means NOT NA)
+
+```{r}
+
+# Remove NA rows and save it as a new dataframe
+smaller_df <- whr_data %>%
+               select(country,
+                      Freedom.to.make.life.choices,
+                      Life.Ladder) %>%
+               filter(!is.na(Freedom.to.make.life.choices), # ! means NOT, so !is.na() means NOT NA
+                      !is.na(Life.Ladder))
+
+# Calculate correlation!
+cor(smaller_df$Freedom.to.make.life.choices,
+    smaller_df$Life.Ladder)
+
+```
+
+Now we see the correlation is .528. That's a pretty strong positive correlation!
+
+## Adding line of best fit
+Although the scatter plot shows the dots are everywhere, it generally shows that as Freedom to make life choices
+increases in a country, that country's life satisfaction (Life.Ladder) also increase. This is a positive correlation. 
+Let’s do this again and add the best fit line, so the trend is more clear. The function to fit the line or simple 
+regression is `lm()`, and the way to use it is `lm(y~x)` where `y~x` is the `formula` to be fitted, `y` is the 
+response or dependent variable, `x` is the explanatory/independent variable, and `~` sign is a separator. 
+Type `?lm` to see more about how to use this function.
+
+```{r}
+
+# first make the scatter plot
+ggplot(smaller_df) + aes(x=Freedom.to.make.life.choices, y=Life.Ladder) + geom_point() +
+  geom_smooth(method='lm', formula=y~x) # Then add the line of best fit! It's as easy as that!
+
+```
+
+
+# Linear Modeling
+
+In the last code block, we had ggplot fit a linear model and add that line to our plot (with some error margins)
+
+Here, we'll fit the same linear model and investigate it more
+
+To fit a linear model in R, you use the `lm()` command. Inside the command,
+you give it a `formula` with the variables you want to model: `lm(y~x)`
+Notice how the y variable comes FIRST and the x comes SECOND. 
+How you can read this is `target variable ~ predictor variable`
+
+Let's fit a linear model predicting Life.Ladder (target variable) using Freedom.to.make.life.choices (predictor variable)
+```{r}
+linear_model <- lm(whr_data$Life.Ladder~whr_data$Freedom.to.make.life.choices)
+
+```
+
+
+What `lm(y~x)` does is to fit the simple linear regression model `y = a + bx`. In other words, `lm()` 
+can estimate the coefficients `a` (intercept) and `b` (slope). We can assess the intercept and slope like the following:
+
+```{r}
+
+# show the summary of the fitted linear model
+summary(linear_model)
+
+
+# We can access the fitted intercepts and slope values
+linear_model$coefficients # this is a vector with two entries, the first one is intercept and other is slope
+
+
+linear_model$coefficients[1] # is the intercept
+linear_model$coefficients[2] # is the slope
+
+```
+
+# Your turn: Questions 2-5 ask you to investigate the relationship between two variables.
+
+**Q2: (20 pts)** One of the other columns in the dataset `whr_data`, is `Social.support`. Please calculate the correlation 
+coefficient between Social.support and Life.Ladder. Be careful of the `NA` values in the columns as shown earlier. 
+Then, interpret what the correlation coefficient means answering these questions:
+
+1. What is the direction of the correlation?
+
+2. How strong is it?
+
+3. Is Social.support more or less correlated to Life.ladder than Freedom.to.make.life.choices is?
+
+**Your answer:**
+
+```{r}
+# Code here
+
+```
+
+Discussion (2-3 sentences): 
+
+
+**Q3: (15 pts)**  Following the previous question Q2, please draw a scatter plot between columns `Life.ladder` 
+and `Social.support` (`Social.support` as x axis and `Life.ladder` as y axis) and add the regression line.
+
+
+
+**Your answer:**
+
+```{r}
+# first make the scatter plot
+
+
+```
+
+
+**Q4: (20 pts)** Following the previous question Q3, fit a simple linear regression model to predict 
+`Life.Ladder` using `Social.support` as our predictor. In other words, `Life.ladder` is `y` and `Social.support` is `x`. 
+The regression line can be described as `y = a + bx`. After fitting the model, answer the following questions:
+
+1. What are fitted values for `a` and `b`? 
+
+2. Is the value of `b` a positive or negative and what does it mean?
+
+3. Look back to the linear modeling results for `Freedom.to.make.life.choices`. Based on the values of `b` for 
+the two linear models, which variable has a larger impact on Life.Ladder? In other words, per unit increase in
+Freedom.to.make.life.choices and Social.support, which results in a larger increase in Life.Ladder? 
+
+
+**Your answer:**
+
+```{r}
+# Code here
+
+```
+
+Discussion (3-4 sentences): 
+
+
+
+**Q5: (30 pts)** This question is more open ended and proceeds in multiple steps. 
+
+So far, we've been focusing on the `Life.Ladder` variable. But there are other
+other measures of happiness in the dataset, especially `Positive.affect` and 
+`Negative.affect`. Positive affect is the frequency of positive feelings
+that participants report. Negative affect is the frequency of negative feelings
+they report. You can google "Positive affect WHR" and "Negative affect WHR"
+to find out more.
+
+Here's what you'll do:
+*A* Create a new variable called `Total.affect` using dplyr's mutate() function
+(you'll probably need to Google to figure out how!)
+*B* Choose one other variable to analyze in relation to your new variable (can
+be anything except for Positive and Negative affect)
+*C* Create a scatter plot with `Total.affect` on the y-axis and your other 
+variable on the x axis. Add the line of best fit
+*D* Calculate Pearson's correlation coefficient in R
+*E* Fit a linear model (remember, put Total.affect first since it's your 
+y-variable, e.g. lm(whr_data$Total.affect~Other.variable))
+*F* In 3-4 sentences, summarize your findings! Is there a relationship between
+your variable and Total.affect? Is it positive or negative? Is it strong or weak?
+What do you think this tells us about happiness? Do you think this is a causal
+relationship or merely correlative? 
+
+
+```{r}
+
+# Put your code here
+
+
+# Part A
+
+
+# Part C
+
+
+# Part D
+
+
+# Part E
+
+
+```
+
+Discussion (3-4 sentences): 
+
+Done! Make sure to submit both your .Rmd and knitted .html file to Canvas!
