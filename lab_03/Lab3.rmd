@@ -25,7 +25,7 @@ Complete all **Questions**, and submit the finished Rmd and HTML file onto Canva
 </div>
 
 # Lab 3 Introduction
-In this lab we explore flights, specifically a random sample of domestic flights that departed from the three major  New York City airport in 2013. We will generate simple graphical and numerical  summaries of data on these flights and explore delay times. As this is a large data set, along the way you'll also learn the indispensable skills of data  processing and subsetting.
+In this lab we explore flights, specifically a random sample of domestic flights that departed from the three major New York City airport in 2013. We will generate simple graphical and numerical  summaries of data on these flights and explore delay times. As this is a large data set, along the way you'll also learn the indispensable skills of data  processing and subsetting.
 
 In total, there are 6 Questions in this lab spread throughout the Markdown document. You'll answer the questions with code and text, then "Knit" your file into an HTML, and finally submit the finished Rmd and HTML to Canvas. 
 
@@ -39,7 +39,7 @@ This section of the lab will highlight more basic coding and R terminology, file
 
 ### The Data Frame
 
-The data frame is a commonly used data structure in statistics and RStudio, and is a key component of this class. The basic structure of a data is in the form of rows and columns. Each row is an observation, or data point. Each column is a variable, which is a measure, feature, or characteristic of that observation. For example, the mtcars dataframe we have already looked at:
+The data frame is a commonly used data structure in statistics and RStudio, and is a key component of this class. The basic structure of a dataframe is in the form of rows and columns. Each row is an observation, or data point. Each column is a variable, which is a measure, feature, or characteristic of that observation. For example, the mtcars dataframe we have already looked at:
 
 ```{r}
 data(mtcars)
@@ -61,7 +61,7 @@ It's usually best to implement libraries in the beginning of R Code. If a functi
 
 ### Dplyr "Verbs"
 
-In this lab we will introduce a couple packages handy for data manipulations and use them to explore flights, specifically a random sample of domestic flights that departed from the three major  New York City airport in 2013. We will generate simple graphical and numerical summaries of data on these flights and explore delay times. As this is a large data set, along the way you'll also learn the indispensable skills of data  processing and sub-setting. We'll be exploring the **dplyr** package and some of it's more commonly used functions.
+In this lab we will introduce a couple packages handy for data manipulations and use them to explore flights, specifically a random sample of domestic flights that departed from the three major  New York City airport in 2013. We will generate simple graphical and numerical summaries of data on these flights and explore delay times. As this is a large data set, along the way you'll also learn the indispensable skills of data processing and sub-setting. We'll be exploring the **dplyr** package and some of it's more commonly used functions.
 
 - `filter()`: extract a subset of rows from a data frame based on logical conditions
 - `arrange()`:reorder rows of a data frame
@@ -88,6 +88,7 @@ to load the data:
 
 # you might need to change to the correct folder
 nycflights <- read.csv('./nycflights.csv')
+head(nycflights)
 ```
 
 The data frame containing `r nrow(nycflights)` flights that shows up in your 
@@ -153,7 +154,7 @@ future lab.
 
 # Lab Overview: Analysis
 
-Today, we're going to focus on analyze flight departure and arrival time delays. 
+Today, we're going to focus on analyzing flight departure and arrival time delays. 
 
 We'll analyze the data in 2 phases, answering questions at each step.
 
@@ -205,6 +206,17 @@ sprintf("kurtosis: %f", kurtosis(nycflights$dep_delay))
 ```{r}
 
 # Write your code here to make the boxplot and histogram
+ggplot(nycflights) + aes(arr_delay) + geom_boxplot() + 
+  ggtitle("Airline Arrival Delays") + 
+  xlab("Arrival Delay in Minutes (negative = early)")
+  
+ggplot(nycflights) + aes(arr_delay) + geom_histogram() +
+  ggtitle("Airline Arrival Delays") + 
+  xlab("Arrival Delay in Minutes (negative = early)") +
+  geom_vline(xintercept=mean(nycflights$arr_delay), color="coral3")
+
+
+
 
 ```
 
