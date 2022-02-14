@@ -173,41 +173,43 @@ What happened here? We can see some dots, but the correlation was NA (meaning mi
 This occurred because there are some missing data points in the data.
 We can remove all the rows with missing data first, then do the correlation. 
 
-We will do this a couple steps, first creating our own data.frame with only the 
-numbers we want to analyse. Similar with the previous case, we can select the
+We will do this a couple steps, first creating our own dataframe with only the 
+numbers we want to analyze. Similar with the previous case, we can select the
 columns we want to keep using `select()`. Then we use `filter()` to remove the
 rows with NAs (! means NOT, so !is.na() means NOT NA)
 
 ```{r}
 
 # Remove NA rows and save it as a new dataframe
-smaller_df <- whr_data %>%
-               select(country,
-                      Freedom.to.make.life.choices,
-                      Life.Ladder) %>%
+whr_clean <- whr_data %>%
                filter(!is.na(Freedom.to.make.life.choices), # ! means NOT, so !is.na() means NOT NA
                       !is.na(Life.Ladder))
 
+whr_clean_Freedom_LifeLadder <- whr_clean %>%
+  select(country, Freedom.to.make.life.choices, Life.Ladder)
+
 # Calculate correlation!
-cor(smaller_df$Freedom.to.make.life.choices,
-    smaller_df$Life.Ladder)
+cor(whr_clean_Freedom_LifeLadder$Freedom.to.make.life.choices,
+    whr_clean_Freedom_LifeLadder$Life.Ladder)
 
 ```
 
 Now we see the correlation is .528. That's a pretty strong positive correlation!
 
 ## Adding line of best fit
-Although the scatter plot shows the dots are everywhere, it generally shows that as Freedom to make life choices
-increases in a country, that country's life satisfaction (Life.Ladder) also increase. This is a positive correlation. 
-Let’s do this again and add the best fit line, so the trend is more clear. The function to fit the line or simple 
-regression is `lm()`, and the way to use it is `lm(y~x)` where `y~x` is the `formula` to be fitted, `y` is the 
-response or dependent variable, `x` is the explanatory/independent variable, and `~` sign is a separator. 
-Type `?lm` to see more about how to use this function.
+Although the scatter plot shows the dots are everywhere, it generally shows
+that as Freedom to make life choices increases in a country, that country's
+life satisfaction (Life.Ladder) also increase. This is a positive correlation. 
+Let’s do this again and add the best fit line, so the trend is more clear. 
+The function to fit the line or simple regression is `lm()`, and the way to 
+use it is `lm(y~x)` where `y~x` is the `formula` to be fitted, `y` is the 
+response or dependent variable, `x` is the explanatory/independent variable, 
+and `~` sign is a separator. Type `?lm` to see more about how to use this function.
 
 ```{r}
 
 # first make the scatter plot
-ggplot(smaller_df) + aes(x=Freedom.to.make.life.choices, y=Life.Ladder) + geom_point() +
+ggplot(whr_clean_Freedom_LifeLadder) + aes(x=Freedom.to.make.life.choices, y=Life.Ladder) + geom_point() +
   geom_smooth(method='lm', formula=y~x) # Then add the line of best fit! It's as easy as that!
 
 ```
@@ -215,7 +217,8 @@ ggplot(smaller_df) + aes(x=Freedom.to.make.life.choices, y=Life.Ladder) + geom_p
 
 # Linear Modeling
 
-In the last code block, we had ggplot fit a linear model and add that line to our plot (with some error margins)
+In the last code block, we had ggplot fit a linear model and add that line to
+our plot (with some error margins)
 
 Here, we'll fit the same linear model and investigate it more
 
@@ -224,15 +227,17 @@ you give it a `formula` with the variables you want to model: `lm(y~x)`
 Notice how the y variable comes FIRST and the x comes SECOND. 
 How you can read this is `target variable ~ predictor variable`
 
-Let's fit a linear model predicting Life.Ladder (target variable) using Freedom.to.make.life.choices (predictor variable)
+Let's fit a linear model predicting Life.Ladder (target variable) using
+Freedom.to.make.life.choices (predictor variable)
 ```{r}
 linear_model <- lm(whr_data$Life.Ladder~whr_data$Freedom.to.make.life.choices)
 
 ```
 
 
-What `lm(y~x)` does is to fit the simple linear regression model `y = a + bx`. In other words, `lm()` 
-can estimate the coefficients `a` (intercept) and `b` (slope). We can assess the intercept and slope like the following:
+What `lm(y~x)` does is to fit the simple linear regression model `y = a + bx`.
+In other words, `lm()` can estimate the coefficients `a` (intercept) and `b` 
+(slope). We can assess the intercept and slope like the following:
 
 ```{r}
 
@@ -251,8 +256,9 @@ linear_model$coefficients[2] # is the slope
 
 # Your turn: Questions 2-5 ask you to investigate the relationship between two variables.
 
-**Q2: (20 pts)** One of the other columns in the dataset `whr_data`, is `Social.support`. Please calculate the correlation 
-coefficient between Social.support and Life.Ladder. Be careful of the `NA` values in the columns as shown earlier. 
+**Q2: (20 pts)** One of the other columns in the dataset `whr_data`, is `Social.support`. Please calculate the correlation coefficient between Social.support and Life.Ladder.
+Be careful of the `NA` values in the columns as shown earlier. 
+
 Then, interpret what the correlation coefficient means answering these questions:
 
 1. What is the direction of the correlation?
@@ -264,8 +270,10 @@ Then, interpret what the correlation coefficient means answering these questions
 **Your answer:**
 
 ```{r}
-# Code here
+whr_clean_Social_Support <- whr_clean %>%
+  select(country, Social.support, Life.Ladder)
 
+social_support_linear_model <- 
 ```
 
 Discussion (2-3 sentences): 
