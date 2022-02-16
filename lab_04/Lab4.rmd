@@ -312,12 +312,23 @@ Freedom.to.make.life.choices and Social.support, which results in a larger incre
 **Your answer:**
 
 ```{r}
+# create linear model
+social_support_linear_model <- lm(whr_clean_Social_Support$Life.Ladder~whr_clean_Social_Support$Social.support)
 
+summary(social_support_linear_model)
 
+# display the linear model coefficients
+sprintf("Intercept: %f", social_support_linear_model$coefficients[1])
+sprintf("Slope: %f", social_support_linear_model$coefficients[2])
+
+# plot that shit
+ggplot(whr_clean) + aes(x=Social.support, y=Life.Ladder) + geom_point() +
+  geom_smooth(method='lm', formula=y~x)
 ```
 
-Discussion (3-4 sentences): 
+### Discussion (3-4 sentences): 
 
+#### The fitted value for `a` is `0.047697` and the fitted value for `b` is `6.668080`. The slope is positive, and quite steep, meaning that the correlation between Social.support and Life.Ladder data is quite strong, meaning that Social.support has a greater impact on Life.Ladder than Freedom.to.make.life.choices.
 
 
 **Q5: (30 pts)** This question is more open ended and proceeds in multiple steps. 
