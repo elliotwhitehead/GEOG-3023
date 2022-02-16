@@ -183,7 +183,8 @@ rows with NAs (! means NOT, so !is.na() means NOT NA)
 # Remove NA rows and save it as a new dataframe
 whr_clean <- whr_data %>%
                filter(!is.na(Freedom.to.make.life.choices), # ! means NOT, so !is.na() means NOT NA
-                      !is.na(Life.Ladder))
+                      !is.na(Life.Ladder),
+                      !is.na(Social.support))
 
 whr_clean_Freedom_LifeLadder <- whr_clean %>%
   select(country, Freedom.to.make.life.choices, Life.Ladder)
@@ -270,25 +271,27 @@ Then, interpret what the correlation coefficient means answering these questions
 **Your answer:**
 
 ```{r}
+
+# select data
 whr_clean_Social_Support <- whr_clean %>%
   select(country, Social.support, Life.Ladder)
 
-social_support_linear_model <- 
+# assess correlation
+cor(whr_clean_Social_Support$Social.support,
+    whr_clean_Social_Support$Life.Ladder)
 ```
+#### "Social support" has a stronger positive correlation (.71) to "Life Ladder" than "Freedom to make life choices" does (.53).
 
 Discussion (2-3 sentences): 
 
 
 **Q3: (15 pts)**  Following the previous question Q2, please draw a scatter plot between columns `Life.ladder` 
 and `Social.support` (`Social.support` as x axis and `Life.ladder` as y axis) and add the regression line.
-
-
-
 **Your answer:**
 
 ```{r}
 # first make the scatter plot
-
+ggplot(whr_clean) + aes(x=Social.support, y=Life.Ladder) + geom_point()
 
 ```
 
@@ -309,7 +312,7 @@ Freedom.to.make.life.choices and Social.support, which results in a larger incre
 **Your answer:**
 
 ```{r}
-# Code here
+
 
 ```
 
