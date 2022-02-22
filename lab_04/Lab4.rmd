@@ -107,7 +107,7 @@ whr_data_us <- whr_data %>%
   filter(country == 'United States')  # only choose United States
 
 # Plot
-ggplot(whr_data_us) + aes(x=year, y=Life.Ladder) + geom_line() +
+ggplot(whr_data_us, cex=2) + aes(x=year, y=Life.Ladder) + geom_line() +
   ggtitle("US Mean Life.Ladder, 2008 - 2020")
 
 ```
@@ -184,7 +184,9 @@ rows with NAs (! means NOT, so !is.na() means NOT NA)
 whr_clean <- whr_data %>%
                filter(!is.na(Freedom.to.make.life.choices), # ! means NOT, so !is.na() means NOT NA
                       !is.na(Life.Ladder),
-                      !is.na(Social.support))
+                      !is.na(Social.support),
+                      !is.na(Positive.affect),
+                      !is.na(Negative.affect))
 
 whr_clean_Freedom_LifeLadder <- whr_clean %>%
   select(country, Freedom.to.make.life.choices, Life.Ladder)
@@ -341,15 +343,20 @@ they report. You can google "Positive affect WHR" and "Negative affect WHR"
 to find out more.
 
 Here's what you'll do:
+
 *A* Create a new variable called `Total.affect` using dplyr's mutate() function
-(you'll probably need to Google to figure out how!)
+
 *B* Choose one other variable to analyze in relation to your new variable (can
 be anything except for Positive and Negative affect)
+
 *C* Create a scatter plot with `Total.affect` on the y-axis and your other 
 variable on the x axis. Add the line of best fit
+
 *D* Calculate Pearson's correlation coefficient in R
+
 *E* Fit a linear model (remember, put Total.affect first since it's your 
 y-variable, e.g. lm(whr_data$Total.affect~Other.variable))
+
 *F* In 3-4 sentences, summarize your findings! Is there a relationship between
 your variable and Total.affect? Is it positive or negative? Is it strong or weak?
 What do you think this tells us about happiness? Do you think this is a causal
@@ -357,24 +364,32 @@ relationship or merely correlative?
 
 
 ```{r}
-
-# Put your code here
-
-
 # Part A
+whr_clean <- mutate(
+  whr_clean, Total.affect = abs(whr_clean$Positive.affect - whr_clean$Negative.affect)
+)
+
+# Plot that shit!
+ggplot(whr_clean) + aes(x=Total.affect, y=Life.Ladder) + geom_point() + geom_smooth(method='lm', formula=y~x)
 
 
-# Part C
+# Correlation of Total.affect and Life.Ladder
+cor(whr_clean$Total.affect, whr_clean$Life.Ladder)
 
 
-# Part D
+# Let's see how Total.affect correlates to Life.ladder!
+total_affect_linear_model <- lm(whr_clean$Total.affect~whr_clean$Life.Ladder)
 
+# intercept
+total_affect_linear_model$coefficients[1]
 
-# Part E
-
+# slope
+total_affect_linear_model$coefficients[2]
 
 ```
 
 Discussion (3-4 sentences): 
+
+#### The Total affect is slightly correlated to Life.Ladder. The correlation is positive, but not very strong. It does make sense that Positive.affect would be positively correlated to Life.Ladder, as people with more mobility / opportunity in life think more positvely about their life.
 
 Done! Make sure to submit both your .Rmd and knitted .html file to Canvas!
