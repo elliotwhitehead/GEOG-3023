@@ -1,0 +1,403 @@
+---
+title: "Lab for GEOG 3023: Statistics for Geography"
+subtitle: "Lab 5: Probability and Bayes' Theorem"
+author: FirstName LastName
+output: 
+  html_document:
+    css: "lab.css"
+---
+
+```{r setup, include=FALSE}
+
+# Setup the environment
+library(knitr)
+knitr::opts_chunk$set(fig.align='center',fig.width=10, fig.height=6, fig.path='Figs/',  warning=FALSE, echo=TRUE, eval=TRUE, message=FALSE)
+library(dplyr)
+
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
+
+```
+
+<div class="instructions">
+
+Complete all **Questions**, and submit the finished Rmd and HTML file onto Canvas. Don't forget to change name field in the beginning to your first and last name. 
+
+</div>
+
+## Introduction
+
+Knowing the basics of probability is central to inferential statistics and hypothesis testing. 
+
+In this lab, you'll get practice calculating probabilities using the multiplication and addition rules and Bayes' Theorem. 
+
+You'll also learn about using "for" loops, which are a valuable tool in programming
+
+### Learning Goals
+
+  1. Use the multiplication and addition rules to calculate probabilities 
+  2. Understanding Bayes' theorem and the applications in problem solving
+  3. Write your first for loop in R
+  
+### Data
+
+For this lab, you'll be acting as a quality checker at a dice factory. The casino's that rely on this factory are EXTREMELY demanding, so they require you to perform extensive tests on each new die that is produced. 
+
+Each new pair of dice get rolled 500 times and the probability of getting each number is checked along with the conditional probabilities (to see if the results of die 1 depend on die 2 and vice versa). The probabilities have to be within 0.05 (or 5%) of the theoretical perfect probability for the dice to pass.
+
+First, we'll load the data and get a look at it
+
+```{r}
+dice_df <- read.csv('./dice.csv')
+
+head(dice_df)
+```
+
+There are 4 columns in dice_df:
+ref_dice1
+ref_dice2
+new_dice1
+new_dice2
+
+The first two (ref_dice#) are reference dice that you know are fair
+The last two (new_dice#) are new dice that you are checking. 
+
+## Part 1: Basic Probabilities
+
+First, recall the basic definition of probability:
+
+$P(A) = \frac{n(A)}{n}$
+
+Where:
+- n = Total possible outcomes or trials (e.g. number of coin flips)
+- n(A) = The number of outcomes that result in event A (e.g. number of heads)
+
+In R, how can we get the counts of n(A) and n?
+
+Well, in this case n is the number of rows in our dataset (the number of rolls)
+
+```{r}
+nrolls = nrow(dice_df) # nrow is a function to get the number of rows in a DF
+```
+
+To get n(A), it depends on what event A we're interested in, but in general we're going
+to use dplyr's filter() and summarise() commands, similar to the airplane lab
+
+Here's an example:
+```{r}
+dice_df %>%
+  summarise(sum(ref_dice1==6) / n())
+```
+
+Here, we use summarise to do three things:
+- sum(ref_dice1==6): count the number of outcomes where dice 1 is 6
+- n(): Counts the total number of rows in our dataframe (same as nrolls above)
+- /: Divide the first number by the second to get P(ref_dice1==6)!
+
+How does our result match up to the expected probability for a fair die?
+
+Typically, we expect to get 6 with probability 1/6, or 0.1667. So our result is pretty close!
+
+Remember that since this is a random experiment, it won't be perfect. 
+
+We can get a little fancier using AND (&) and OR (|) rules to calculate the probability of different events:
+
+#### *Reference Dice Testing* 
+
+Lets make sure our reference dice are accurate enough for comparison.
+
+```{r}
+dice_df %>%
+  summarise(P_1_or_2 = sum( ref_dice1==1 | ref_dice1==2) / n()) # Probability of getting 1 OR 2 for dice 1
+
+dice_df %>%
+  summarise(P_less_than_4 = sum(ref_dice1<4) / n()) # Probability of getting less than 4 for dice 1 (so 1, 2, or 3)
+
+dice_df %>%
+  summarise(P_6_both_dice = sum( ref_dice1==6 & ref_dice2==6) / n()) # Probability of getting 6 for both dice 1 and 2
+
+dice_df %>%
+  summarise(P_d1_is_1_or_2_d2_is_5 = sum((ref_dice1==2 | ref_dice1==3) & ref_dice2==5) / n()) # Probability of dice 1 is 2 OR 3 AND dice 2 is 5
+
+```
+
+Now that we have the reference data, let's check these results against the theoretical probability for fair dice.
+
+The probability that dice 1 rolls a 1 or a 6 is $P(dice1 == 1 OR dice1 == 2) = P(1) + P(2) - P(1 AND 2) = 1/6 + 1/6 - 0 = 2/6 = 0.333$
+
+Our results was 0.354, so that's within +/- 0.05!
+
+Now you'll do the rest. If you need a refresher on probability or the addition or multiplication rules, look back to the slides from 2/8. 
+
+**Q1 (10 pts):** Calculate the following theoretical probabilities for the reference dice from the previous example and compare them to the results we calculated from the reference dice testing. Are they within +/- 0.05?
+
+ A. Probability dice 1 is less than 4
+ B. Probability dice 1 and dice 2 rolls a 6
+ C. Probability dice 1 is a 1 or a 2 and dice 2 is a 5
+
+**Your Answers:**
+ A.
+ B.
+ C. 
+
+```{r}
+
+# You can put code you used to calculate the theoretical probabilities here
+# A=
+# B=
+# C=
+```
+
+**Q2 (15 pts):** Use dplyr to calculate the experimental probabilities of the following events for the *NEW* dice (calulated from the dataset):
+
+A. P(new_dice1==1)
+B. P(new_dice2==6)
+C. P(new_dice1==1 AND new_dice2==6)
+D. P(new_dice1<4 AND new_dice2>3)
+E. P(new_dice1+new_dice2==7) # For this one, you might have to get creative
+
+```{r}
+# A. P(new_dice1==1)
+
+# B. P(new_dice2==6)
+
+# C. P(new_dice1==1 AND new_dice2==6)
+
+# D. P(new_dice1<4 AND new_dice2>3)
+
+# E. P(new_dice1+new_dice2==7) 
+```
+
+**Q3 (10 pts):** Assuming fair dice, calculate the following *THEORETICAL* probabilities.
+Did the new dice pass the test within +/- 0.05?
+
+A. P(new_dice1==1)
+B. P(new_dice2==6)
+C. P(new_dice1==1 AND new_dice2==6)
+D. P(new_dice1<4 AND new_dice2>3)
+E. P(new_dice1+new_dice2==7) - For this one, you might have to write out all the possibilities 
+
+**Your Answer:**
+```{r}
+# Place your code here
+# A.
+# B.
+# C.
+# D.
+# E.
+```
+
+## Part 2: Conditional Probabilities
+
+Recall that we define conditional probabilities as:
+
+P(B | A) = probability of B *given* that A has already happened
+
+(Unfortunately, the | symbol, which we use for conditional probabilities, is also used as the OR symbol in R)
+
+So for example, we might want to know the probability of dice 2 being 6 (we'll call that B)
+GIVEN that dice 1 is 1.
+
+Since these events SHOULD BE independent, P(B | A) = P(B)
+
+Here's an example of calculating a conditional probability using dplyr:
+
+```{r}
+# P(ref_dice2==6 GIVEN THAT ref_dice1==1)
+dice_df %>%
+  filter(ref_dice1==1) %>% # first get only outcomes where ref_dice1==1
+  summarise(P_d2_6_given_d1_1 = sum( ref_dice2==6 ) / n()) # Out of those outcomes, what's the probability ref_dice2==6?
+```
+
+Remember, since the dice are independent, this probability (in theory) should be the same as P(ref_dice2==6), or 1/6th.
+
+1/6 is 0.1667, so our result is close to being outside of our +/- 0.05 range, but it's still in there so we're ok!
+
+
+### Your turn: Conditional probabilities of new dice
+
+**Q4 (10 pts)** For the NEW dice, calculate the following probabilities:
+
+A. P(dice2==3 GIVEN dice1==3)
+B. P(dice1==4 GIVEN dice2==2)
+
+```{r}
+# A. P(dice2==3 GIVEN dice1==3)
+
+# B. P(dice1==4 GIVEN dice2==2)
+
+```
+
+Do they pass the test?
+
+**Your Answer:**
+
+A. 
+B. 
+
+
+## Part 3: For loops
+
+### READ THIS PART CAREFULLY
+
+### IT'S NEW AND VERY USEFUL!
+
+If the Casino wants to know whether ALL conditional probabilities pass, that would take a lot of work!
+P(dice1=1 GIVEN dice2=1)
+P(dice1=2 GIVEN dice2=1)
+P(dice1=3 GIVEN dice2=1)
+...
+P(dice1=6 GIVEN dice2=6)
+
+Instead of writing this all by hand, there's a useful programming tool we can use called a "FOR" loop.
+
+At it's most basic, a for loop repeats the code inside the loop *for* whatever values are defined by the loop.
+
+Let's look at an example:
+
+```{r}
+for(i in c(1,2,3)){
+  print(i)
+}
+```
+
+In this case, the loop is running the print(i) code 3 times, once for each value 
+of i that we defined inside the for(i in c(1,2,3)) command. Remember that c()
+defines a vector (or list) of values. In this case, each time we go through the loop,
+i will take on the next value in that list. Instead of using a for loop, we could write it
+out like this:
+
+```{r}
+i <- 1
+print(i)
+i<-2
+print(i)
+i<-3
+print(i)
+```
+
+You can see that the for loop saves us some busy work!
+
+We can define different values of i and get different results:
+
+```{r}
+for(i in c(3,10,500, 1000)){
+  print(i)
+}
+```
+
+Of course, we do more than just printing out the values of i. Let's do some math:
+
+```{r}
+for(i in c(3,4,5,6,7)){
+  print(i+10)
+}
+```
+
+We can use this to calculate probabilities for different outcomes for our dice example.
+
+For example, for ref_dice1 let's calculate the probability of each possible outcome from 1 to 6:
+
+```{r}
+for(i in c(1,2,3,4,5,6)){
+  print(
+    dice_df %>%
+    summarise(sum(ref_dice1==i) / n()) # Probability of getting "i" 
+  )
+}
+```
+
+Look through all the results. Do they meet the +/- 0.05 threshold vs. the theoretical probability?
+
+
+**Q5 (15pts):** Using a for loop, calculate the conditional probabilities for values 1 through 6 for dice2 *GIVEN* that dice1 is 6. In other words compute P(d2 is 6 | d1 is i) where i is 1 through 6. Do any of the values fall outside the +/-0.05 test range? If so, which ones?
+
+**Your Answer:**
+
+For this one, we'll give you part of a for loop to start. You'll have to fill it in the rest of the way
+
+```{r}
+for(i in c(1,2,3,4,5,6)) {
+  print(
+    dice_df %>%
+      filter( ) %>% # What goes inside this filter()?
+      summarise( ) # What goes inside this summarise?
+  )
+}
+
+```
+
+Discussion: 
+
+
+## Part 4: Bayes' Theorem
+
+For the last part of the lab, we're going to leave the data to the side. 
+
+Recall Bayes' theorem, which allows us to calculate conditional probabilities that we can't directly:
+
+P(A | B) = P(B | A)*P(A)/P(B)
+
+We don't always have P(B) directly, but we can calculate it from the law of total probability:
+P(B) = P(B|A)P(A) + P(B|Not-A)P(Not-A)
+
+Remember:
+P(B|Not-A) = 1-(P(Not-B|Not-A))
+P(Not-A) = 1-P(A)
+
+Let's imagine that your company has a test for dice, but it's not perfect. If the dice
+are UNFAIR, they should FAIL the test. If they are FAIR, they should PASS.
+
+It has sensitivity of 90% and specificity of 95%
+
+As discussed in class,sensitivity measures the percentage chance that the test will 
+correctly identify a UNFAIR die, P(FAILS|UNFAIR). The specificity measures the percentage chance that the test will correctly identify a FAIR die, i.e., P(PASS|FAIR).
+
+Now, due to manufacturing defects, about 1 in 100 dice are faulty for some reason (it's probably MUCH lower in actual factories). This is P(UNFAIR)
+
+In other words, we're giving you these  probabilities:
+P(FAILS|UNFAIR) = 0.9
+P(PASS|FAIR) = 0.95
+P(UNFAIR) = 0.01
+
+**Q6: (15 pts):** You run a die through the test and it says the dice IS faulty. 
+What is the probability it is ACTUALLY faulty?
+
+*Hint* You are calculating P(UNFAIR|FAILS). Look at Bayes up top. A = UNFAIR. B = FAILS.
+
+*Second hint*: This probability you calculate will likely be lower than what you expected. This is part of the false positive paradox!
+
+*Third hint*: If you are unsure of where to get started, it may help to look back to the
+lecture slides and recording from Thursday (2/10). We're doing the same thing we did
+with the beetle example.
+
+It may help to first calculate the following probabilities:
+P(FAILS|FAIR) = 1-(P(PASS|FAIR))
+P(FAIR) = 1-P(UNFAIR)
+
+
+
+
+**Your answer**
+
+```{r}
+# Your calculations here
+
+```
+
+The company is worried about throwing out good dice and losing profits,
+and so it is planning to invest for a test that has much better accuracy.
+
+This new test has sensitivity of 99% and specificity of 99%.
+
+**Q7: (15 pts):** If you ran a die through the new test and it says the dice IS faulty. What is the probability it is ACTUALLY faulty? Is the new test better?
+
+**Your answer**
+
+```{r}
+# Your calculations here
+
+```
+
+That's it for this weeks lab!
