@@ -1,7 +1,7 @@
 ---
 title: "Lab for GEOG 3023: Statistics for Geography"
 subtitle: "Lab 5: Probability and Bayes' Theorem"
-author: FirstName LastName
+author: Elliot Whitehead
 output: 
   html_document:
     css: "lab.css"
@@ -133,23 +133,34 @@ Now you'll do the rest. If you need a refresher on probability or the addition o
 **Q1 (10 pts):** Calculate the following theoretical probabilities for the reference dice from the previous example and compare them to the results we calculated from the reference dice testing. Are they within +/- 0.05?
 
  A. Probability dice 1 is less than 4
+ 
  B. Probability dice 1 and dice 2 rolls a 6
+ 
  C. Probability dice 1 is a 1 or a 2 and dice 2 is a 5
 
 **Your Answers:**
- A.
- B.
+ A. 
+ B. 
  C. 
 
 ```{r}
 
-# You can put code you used to calculate the theoretical probabilities here
-# A=
-# B=
-# C=
+# A. Probability dice 1 is less than 4
+dice_df %>%
+  summarise(d1_lt_4 = sum(new_dice1 < 4) / n())
+
+# B. Probability dice 1 and dice 2 rolls a 6
+dice_df %>%
+  summarise(both_roll_six = sum(new_dice1 == 6 & new_dice2 == 6) / n())
+
+# C. Probability (dice 1 is 1 or 2) and (dice 2 is a 5)
+dice_df %>%
+  summarise(d1_is_1or2_and_d2_is_5 = sum((new_dice1 == 1 | new_dice1 == 2) & new_dice2 == 5) / n())
+
+
 ```
 
-**Q2 (15 pts):** Use dplyr to calculate the experimental probabilities of the following events for the *NEW* dice (calulated from the dataset):
+**Q2 (15 pts):** Use dplyr to calculate the experimental probabilities of the following events for the *NEW* dice (calculated from the dataset):
 
 A. P(new_dice1==1)
 B. P(new_dice2==6)
