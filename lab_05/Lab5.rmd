@@ -145,6 +145,35 @@ Now you'll do the rest. If you need a refresher on probability or the addition o
 
 ```{r}
 
+
+# A. Probability dice 1 is less than 4
+dice_df %>%
+  summarise(rd1_lt_4 = sum(ref_dice1 < 4) / n())
+
+# B. Probability dice 1 and dice 2 rolls a 6
+dice_df %>%
+  summarise(both_rdie_roll_six = sum(ref_dice1 == 6 & ref_dice2 == 6) / n())
+
+# C. Probability (dice 1 is 1 or 2) and (dice 2 is a 5)
+dice_df %>%
+  summarise(rd1_is_1or2_and_rd2_is_5 = sum((ref_dice1 == 1 | ref_dice1 == 2) & ref_dice2 == 5) / n())
+
+
+```
+
+**Q2 (15 pts):** Use dplyr to calculate the experimental probabilities of the following events for the *NEW* dice (calculated from the dataset):
+
+A. P(new_dice1==1)
+
+B. P(new_dice2==6)
+
+C. P(new_dice1==1 AND new_dice2==6)
+
+D. P(new_dice1<4 AND new_dice2>3)
+
+E. P(new_dice1+new_dice2==7) # For this one, you might have to get creative
+
+```{r}
 # A. Probability dice 1 is less than 4
 dice_df %>%
   summarise(d1_lt_4 = sum(new_dice1 < 4) / n())
@@ -158,22 +187,17 @@ dice_df %>%
   summarise(d1_is_1or2_and_d2_is_5 = sum((new_dice1 == 1 | new_dice1 == 2) & new_dice2 == 5) / n())
 
 
-```
-
-**Q2 (15 pts):** Use dplyr to calculate the experimental probabilities of the following events for the *NEW* dice (calculated from the dataset):
-
-A. P(new_dice1==1)
-B. P(new_dice2==6)
-C. P(new_dice1==1 AND new_dice2==6)
-D. P(new_dice1<4 AND new_dice2>3)
-E. P(new_dice1+new_dice2==7) # For this one, you might have to get creative
-
-```{r}
 # A. P(new_dice1==1)
+dice_df %>%
+  summarise(nd1_is_one = sum(new_dice1 == 1) / n())
 
 # B. P(new_dice2==6)
+dice_df %>%
+  summarise(nd2_is_six = sum(new_dice1 == 6) / n())
 
 # C. P(new_dice1==1 AND new_dice2==6)
+dice_df %>%
+  summarise(nd1_is_one_and_nd2_is_six = sum(new_dice1 == 1 & new_dice2 == 6) / n())
 
 # D. P(new_dice1<4 AND new_dice2>3)
 
