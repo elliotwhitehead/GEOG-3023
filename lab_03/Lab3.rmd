@@ -370,8 +370,7 @@ nycflights %>%
             sd_dep_delay = sd(dep_delay), 
             n = n())
 
-ggplot(nycflights) + aes(x=origin, y=dep_delay, fill=origin) + geom_boxplot()
-
+ggplot(nycflights) + aes(x=origin, y=dep_delay, fill=origin) + geom_boxplot() + xlab("Airport") + ylab("Departure Delay (minutes)") + ggtitle("Departure Delay Times in NYC")
 
 ```
 
