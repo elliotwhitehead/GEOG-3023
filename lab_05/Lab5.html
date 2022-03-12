@@ -275,21 +275,6 @@ dice_df %&gt;%
 <p>C. P(new_dice1==1 AND new_dice2==6)</p>
 <p>D. P(new_dice1&lt;4 AND new_dice2&gt;3)</p>
 <p>E. P(new_dice1+new_dice2==7) # For this one, you might have to get creative</p>
-<pre class="r"><code># A. Probability dice 1 is less than 4
-dice_df %&gt;%
-  summarise(d1_lt_4 = sum(new_dice1 &lt; 4) / n())</code></pre>
-<pre><code>##   d1_lt_4
-## 1    0.49</code></pre>
-<pre class="r"><code># B. Probability dice 1 and dice 2 rolls a 6
-dice_df %&gt;%
-  summarise(both_roll_six = sum(new_dice1 == 6 &amp; new_dice2 == 6) / n())</code></pre>
-<pre><code>##   both_roll_six
-## 1         0.026</code></pre>
-<pre class="r"><code># C. Probability (dice 1 is 1 or 2) and (dice 2 is a 5)
-dice_df %&gt;%
-  summarise(d1_is_1or2_and_d2_is_5 = sum((new_dice1 == 1 | new_dice1 == 2) &amp; new_dice2 == 5) / n())</code></pre>
-<pre><code>##   d1_is_1or2_and_d2_is_5
-## 1                  0.046</code></pre>
 <pre class="r"><code># A. P(new_dice1==1)
 dice_df %&gt;%
   summarise(nd1_is_one = sum(new_dice1 == 1) / n())</code></pre>
@@ -306,17 +291,45 @@ dice_df %&gt;%
 <pre><code>##   nd1_is_one_and_nd2_is_six
 ## 1                      0.01</code></pre>
 <pre class="r"><code># D. P(new_dice1&lt;4 AND new_dice2&gt;3)
-
-# E. P(new_dice1+new_dice2==7) </code></pre>
+dice_df %&gt;%
+  summarise(nd1_is_lt4_and_nd2_gt3 = sum(new_dice1 &lt; 4 &amp; new_dice2 &gt; 3) / n())</code></pre>
+<pre><code>##   nd1_is_lt4_and_nd2_gt3
+## 1                  0.242</code></pre>
+<pre class="r"><code># E. P(new_dice1+new_dice2==7)
+dice_df %&gt;%
+  summarise( sum_is_seven = sum((new_dice1 + new_dice2) == 7) / n())</code></pre>
+<pre><code>##   sum_is_seven
+## 1        0.098</code></pre>
 <p><strong>Q3 (10 pts):</strong> Assuming fair dice, calculate the following <em>THEORETICAL</em> probabilities. Did the new dice pass the test within +/- 0.05?</p>
 <p>A. P(new_dice1==1) B. P(new_dice2==6) C. P(new_dice1==1 AND new_dice2==6) D. P(new_dice1&lt;4 AND new_dice2&gt;3) E. P(new_dice1+new_dice2==7) - For this one, you might have to write out all the possibilities</p>
 <p><strong>Your Answer:</strong></p>
-<pre class="r"><code># Place your code here
-# A.
-# B.
-# C.
-# D.
-# E.</code></pre>
+<pre class="r"><code># A. P(new_dice1==1)
+theoretical_A &lt;- (1/6)
+actual_A &lt;- dice_df %&gt;%
+  summarise(sum(new_dice1 == 1) / n())
+
+if(abs(actual_A - theoretical_A) &lt; .05){
+  print(&quot;PASS&quot;)
+}else{
+  print(&quot;FAIL&quot;)
+}</code></pre>
+<pre><code>## [1] &quot;PASS&quot;</code></pre>
+<pre class="r"><code># B. P(new_dice2==6)
+theoretical_B &lt;- (1/6)
+actual_B &lt;- dice_df %&gt;%
+  summarise(sum(new_dice2 == 6) / n())
+
+if(abs(actual_B - theoretical_B) &lt; .05){
+  print(&quot;PASS&quot;)
+}else{
+  print(&quot;FAIL&quot;)
+}</code></pre>
+<pre><code>## [1] &quot;PASS&quot;</code></pre>
+<pre class="r"><code># C. P(new_dice1==1 AND new_dice2==6)
+
+# D. P(new_dice1&lt;4 AND new_dice2&gt;3)
+
+# E. P(new_dice1+new_dice2==7)</code></pre>
 </div>
 </div>
 <div id="part-2-conditional-probabilities" class="section level2">
