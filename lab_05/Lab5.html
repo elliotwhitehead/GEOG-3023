@@ -326,10 +326,38 @@ if(abs(actual_B - theoretical_B) &lt; .05){
 }</code></pre>
 <pre><code>## [1] &quot;PASS&quot;</code></pre>
 <pre class="r"><code># C. P(new_dice1==1 AND new_dice2==6)
+theoretical_C &lt;- ((1/6)*(1/6))
+actual_C &lt;- dice_df %&gt;%
+  summarise(sum(new_dice1 == 1 &amp; new_dice2 == 6) / n())
 
-# D. P(new_dice1&lt;4 AND new_dice2&gt;3)
+if(abs(actual_C - theoretical_C) &lt; .05){
+  print(&quot;PASS&quot;)
+}else{
+  print(&quot;FAIL&quot;)
+}</code></pre>
+<pre><code>## [1] &quot;PASS&quot;</code></pre>
+<pre class="r"><code># D. P(new_dice1&lt;4 AND new_dice2&gt;3)
+theoretical_D &lt;- ((1/2)*(1/2))
+actual_D &lt;- dice_df %&gt;%
+  summarise(sum(new_dice1 &lt; 4 &amp; new_dice2 &gt; 3) / n())
 
-# E. P(new_dice1+new_dice2==7)</code></pre>
+if(abs(actual_D - theoretical_D) &lt; .05){
+  print(&quot;PASS&quot;)
+}else{
+  print(&quot;FAIL&quot;)
+}</code></pre>
+<pre><code>## [1] &quot;PASS&quot;</code></pre>
+<pre class="r"><code># E. P(new_dice1+new_dice2==7)
+theoretical_E &lt;- (6/36)
+actual_E &lt;- dice_df %&gt;%
+  summarise(sum((new_dice1 + new_dice2) == 7) / n())
+
+if(abs(actual_E - theoretical_E) &lt; .05){
+  print(&quot;PASS&quot;)
+}else{
+  print(&quot;FAIL&quot;)
+}</code></pre>
+<pre><code>## [1] &quot;FAIL&quot;</code></pre>
 </div>
 </div>
 <div id="part-2-conditional-probabilities" class="section level2">

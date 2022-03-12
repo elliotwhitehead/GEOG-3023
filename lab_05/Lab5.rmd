@@ -231,10 +231,38 @@ if(abs(actual_B - theoretical_B) < .05){
 }
 
 # C. P(new_dice1==1 AND new_dice2==6)
+theoretical_C <- ((1/6)*(1/6))
+actual_C <- dice_df %>%
+  summarise(sum(new_dice1 == 1 & new_dice2 == 6) / n())
+
+if(abs(actual_C - theoretical_C) < .05){
+  print("PASS")
+}else{
+  print("FAIL")
+}
 
 # D. P(new_dice1<4 AND new_dice2>3)
+theoretical_D <- ((1/2)*(1/2))
+actual_D <- dice_df %>%
+  summarise(sum(new_dice1 < 4 & new_dice2 > 3) / n())
+
+if(abs(actual_D - theoretical_D) < .05){
+  print("PASS")
+}else{
+  print("FAIL")
+}
 
 # E. P(new_dice1+new_dice2==7)
+theoretical_E <- (6/36)
+actual_E <- dice_df %>%
+  summarise(sum((new_dice1 + new_dice2) == 7) / n())
+
+if(abs(actual_E - theoretical_E) < .05){
+  print("PASS")
+}else{
+  print("FAIL")
+}
+
 ```
 
 ## Part 2: Conditional Probabilities
