@@ -301,8 +301,14 @@ B. P(dice1==4 GIVEN dice2==2)
 
 ```{r}
 # A. P(dice2==3 GIVEN dice1==3)
+dice_df %>%
+  filter(new_dice1 == 3) %>%
+  summarise(sum(new_dice2 == 3) / n())
 
 # B. P(dice1==4 GIVEN dice2==2)
+dice_df %>%
+  filter(new_dice2 == 2) %>%
+  summarise(sum(new_dice1 == 4) / n())
 
 ```
 
@@ -310,8 +316,9 @@ Do they pass the test?
 
 **Your Answer:**
 
-A. 
-B. 
+A. Pass
+
+B. Pass
 
 
 ## Part 3: For loops

@@ -381,14 +381,21 @@ dice_df %&gt;%
 <p><strong>Q4 (10 pts)</strong> For the NEW dice, calculate the following probabilities:</p>
 <p>A. P(dice2==3 GIVEN dice1==3) B. P(dice1==4 GIVEN dice2==2)</p>
 <pre class="r"><code># A. P(dice2==3 GIVEN dice1==3)
-
-# B. P(dice1==4 GIVEN dice2==2)</code></pre>
+dice_df %&gt;%
+  filter(new_dice1 == 3) %&gt;%
+  summarise(sum(new_dice2 == 3) / n())</code></pre>
+<pre><code>##   sum(new_dice2 == 3)/n()
+## 1               0.1204819</code></pre>
+<pre class="r"><code># B. P(dice1==4 GIVEN dice2==2)
+dice_df %&gt;%
+  filter(new_dice2 == 2) %&gt;%
+  summarise(sum(new_dice1 == 4) / n())</code></pre>
+<pre><code>##   sum(new_dice1 == 4)/n()
+## 1               0.1829268</code></pre>
 <p>Do they pass the test?</p>
 <p><strong>Your Answer:</strong></p>
-<ol style="list-style-type: upper-alpha">
-<li></li>
-<li></li>
-</ol>
+<p>A. Pass</p>
+<p>B. Pass</p>
 </div>
 </div>
 <div id="part-3-for-loops" class="section level2">
