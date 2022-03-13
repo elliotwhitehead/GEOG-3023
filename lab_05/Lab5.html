@@ -308,7 +308,7 @@ theoretical_A &lt;- (1/6)
 actual_A &lt;- dice_df %&gt;%
   summarise(sum(new_dice1 == 1) / n())
 
-if(abs(actual_A - theoretical_A) &lt; .05){
+if(abs(actual_A - theoretical_A) &lt;= .05){
   print(&quot;PASS&quot;)
 }else{
   print(&quot;FAIL&quot;)
@@ -319,7 +319,7 @@ theoretical_B &lt;- (1/6)
 actual_B &lt;- dice_df %&gt;%
   summarise(sum(new_dice2 == 6) / n())
 
-if(abs(actual_B - theoretical_B) &lt; .05){
+if(abs(actual_B - theoretical_B) &lt;= .05){
   print(&quot;PASS&quot;)
 }else{
   print(&quot;FAIL&quot;)
@@ -330,7 +330,7 @@ theoretical_C &lt;- ((1/6)*(1/6))
 actual_C &lt;- dice_df %&gt;%
   summarise(sum(new_dice1 == 1 &amp; new_dice2 == 6) / n())
 
-if(abs(actual_C - theoretical_C) &lt; .05){
+if(abs(actual_C - theoretical_C) &lt;= .05){
   print(&quot;PASS&quot;)
 }else{
   print(&quot;FAIL&quot;)
@@ -341,7 +341,7 @@ theoretical_D &lt;- ((1/2)*(1/2))
 actual_D &lt;- dice_df %&gt;%
   summarise(sum(new_dice1 &lt; 4 &amp; new_dice2 &gt; 3) / n())
 
-if(abs(actual_D - theoretical_D) &lt; .05){
+if(abs(actual_D - theoretical_D) &lt;= .05){
   print(&quot;PASS&quot;)
 }else{
   print(&quot;FAIL&quot;)
@@ -464,18 +464,39 @@ print(i)</code></pre>
 <p>For this one, we’ll give you part of a for loop to start. You’ll have to fill it in the rest of the way</p>
 <pre class="r"><code>for(i in c(1,2,3,4,5,6)) {
   print(
-    dice_df %&gt;%
-      filter( ) %&gt;% # What goes inside this filter()?
-      summarise( ) # What goes inside this summarise?
+    prob &lt;- dice_df %&gt;%
+      filter(new_dice1 == 6) %&gt;% 
+      summarise(sum(new_dice2 == i) / n())
   )
+  if(abs(prob[1] - (1/6)) &lt;= 0.05){
+    print(&quot;PASS&quot;)
+  }
+  else{
+    print(&quot;FAIL&quot;)
+  }
 }</code></pre>
-<pre><code>## data frame with 0 columns and 1 row
-## data frame with 0 columns and 1 row
-## data frame with 0 columns and 1 row
-## data frame with 0 columns and 1 row
-## data frame with 0 columns and 1 row
-## data frame with 0 columns and 1 row</code></pre>
-<p>Discussion:</p>
+<pre><code>##   sum(new_dice2 == i)/n()
+## 1               0.1123596
+## [1] &quot;FAIL&quot;
+##   sum(new_dice2 == i)/n()
+## 1               0.4157303
+## [1] &quot;FAIL&quot;
+##   sum(new_dice2 == i)/n()
+## 1               0.1011236
+## [1] &quot;FAIL&quot;
+##   sum(new_dice2 == i)/n()
+## 1               0.1460674
+## [1] &quot;PASS&quot;
+##   sum(new_dice2 == i)/n()
+## 1              0.07865169
+## [1] &quot;FAIL&quot;
+##   sum(new_dice2 == i)/n()
+## 1               0.1460674
+## [1] &quot;PASS&quot;</code></pre>
+<div id="discussion" class="section level4">
+<h4>Discussion:</h4>
+<p>Most of the these tests did not meet our requirement of being within +/- 0.05 of the theoretical probability (1.66667).</p>
+</div>
 </div>
 <div id="part-4-bayes-theorem" class="section level2">
 <h2>Part 4: Bayes’ Theorem</h2>

@@ -213,7 +213,7 @@ theoretical_A <- (1/6)
 actual_A <- dice_df %>%
   summarise(sum(new_dice1 == 1) / n())
 
-if(abs(actual_A - theoretical_A) < .05){
+if(abs(actual_A - theoretical_A) <= .05){
   print("PASS")
 }else{
   print("FAIL")
@@ -224,7 +224,7 @@ theoretical_B <- (1/6)
 actual_B <- dice_df %>%
   summarise(sum(new_dice2 == 6) / n())
 
-if(abs(actual_B - theoretical_B) < .05){
+if(abs(actual_B - theoretical_B) <= .05){
   print("PASS")
 }else{
   print("FAIL")
@@ -235,7 +235,7 @@ theoretical_C <- ((1/6)*(1/6))
 actual_C <- dice_df %>%
   summarise(sum(new_dice1 == 1 & new_dice2 == 6) / n())
 
-if(abs(actual_C - theoretical_C) < .05){
+if(abs(actual_C - theoretical_C) <= .05){
   print("PASS")
 }else{
   print("FAIL")
@@ -246,7 +246,7 @@ theoretical_D <- ((1/2)*(1/2))
 actual_D <- dice_df %>%
   summarise(sum(new_dice1 < 4 & new_dice2 > 3) / n())
 
-if(abs(actual_D - theoretical_D) < .05){
+if(abs(actual_D - theoretical_D) <= .05){
   print("PASS")
 }else{
   print("FAIL")
@@ -399,16 +399,23 @@ For this one, we'll give you part of a for loop to start. You'll have to fill it
 ```{r}
 for(i in c(1,2,3,4,5,6)) {
   print(
-    dice_df %>%
-      filter( ) %>% # What goes inside this filter()?
-      summarise( ) # What goes inside this summarise?
+    prob <- dice_df %>%
+      filter(new_dice1 == 6) %>% 
+      summarise(sum(new_dice2 == i) / n())
   )
+  if(abs(prob[1] - (1/6)) <= 0.05){
+    print("PASS")
+  }
+  else{
+    print("FAIL")
+  }
 }
 
 ```
 
-Discussion: 
-
+#### Discussion: 
+Most of the these tests did not meet our requirement of being within +/- 0.05 of
+the theoretical probability (1.66667).
 
 ## Part 4: Bayes' Theorem
 
