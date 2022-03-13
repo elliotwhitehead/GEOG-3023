@@ -320,12 +320,7 @@ A. Pass
 
 B. Pass
 
-
 ## Part 3: For loops
-
-### READ THIS PART CAREFULLY
-
-### IT'S NEW AND VERY USEFUL!
 
 If the Casino wants to know whether ALL conditional probabilities pass, that would take a lot of work!
 P(dice1=1 GIVEN dice2=1)
