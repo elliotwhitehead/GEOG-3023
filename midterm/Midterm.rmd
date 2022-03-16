@@ -1,7 +1,7 @@
 ---
 title: "GEOG 3023: Statistics for Geography"
 subtitle: "Midterm (Spring 2022)"
-author: FirstName LastName
+author: Elliot Whitehead
 output: 
   html_document:
     css: "lab.css"
@@ -48,7 +48,7 @@ true or false? (3 points)
 - True 
 - False 
 
-**Your answer:**
+**Your answer: **
 
 
 </div>
