@@ -448,7 +448,7 @@ P(PASS|FAIR) = 0.95
 P(UNFAIR) = 0.01
 
 **Q6: (15 pts):** You run a die through the test and it FAILS the test. 
-What is the probability it is ACTUALLY faulty?
+What is the probability it is actually UNFAIR?
 
 *Hint* You are calculating P(UNFAIR|FAILS). Look at Bayes up top. A = UNFAIR. B = FAILS.
 
@@ -469,7 +469,8 @@ P(FAIR) = 1-P(UNFAIR)
 p_fails_given_fair <- (1 - 0.95)
 p_fair <- (1 - .01)
 
-
+p_unfair_given_fails <- ((.9*.01))/((.9*.01)+(.05*.99))
+print(p_unfair_given_fails)
 ```
 
 The company is worried about throwing out good dice and losing profits,
@@ -477,13 +478,14 @@ and so it is planning to invest for a test that has much better accuracy.
 
 This new test has sensitivity of 99% and specificity of 99%.
 
-**Q7: (15 pts):** If you ran a die through the new test and it says the dice IS faulty. What is the probability it is ACTUALLY faulty? Is the new test better?
+**Q7: (15 pts):** If you ran a die through the new test and it FAILS the test. What is the probability it is actually UNFAIR? Is the new test better?
 
 **Your answer**
 
 ```{r}
-# Your calculations here
+p_unfair_given_fails_v2 <- (.99*.01)/((.99*.01)+(.01*.99))
+print(p_unfair_given_fails_v2)
 
 ```
+Yes, the new test is much more accurate at detecting an unfair die!
 
-That's it for this weeks lab!
