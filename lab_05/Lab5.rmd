@@ -447,7 +447,7 @@ P(FAILS|UNFAIR) = 0.9
 P(PASS|FAIR) = 0.95
 P(UNFAIR) = 0.01
 
-**Q6: (15 pts):** You run a die through the test and it says the dice IS faulty. 
+**Q6: (15 pts):** You run a die through the test and it FAILS the test. 
 What is the probability it is ACTUALLY faulty?
 
 *Hint* You are calculating P(UNFAIR|FAILS). Look at Bayes up top. A = UNFAIR. B = FAILS.
@@ -463,12 +463,12 @@ P(FAILS|FAIR) = 1-(P(PASS|FAIR))
 P(FAIR) = 1-P(UNFAIR)
 
 
-
-
 **Your answer**
 
 ```{r}
-# Your calculations here
+p_fails_given_fair <- (1 - 0.95)
+p_fair <- (1 - .01)
+
 
 ```
 

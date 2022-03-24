@@ -510,13 +510,14 @@ print(i)</code></pre>
 <p>As discussed in class,sensitivity measures the percentage chance that the test will correctly identify a UNFAIR die, P(FAILS|UNFAIR). The specificity measures the percentage chance that the test will correctly identify a FAIR die, i.e., P(PASS|FAIR).</p>
 <p>Now, due to manufacturing defects, about 1 in 100 dice are faulty for some reason (it’s probably MUCH lower in actual factories). This is P(UNFAIR)</p>
 <p>In other words, we’re giving you these probabilities: P(FAILS|UNFAIR) = 0.9 P(PASS|FAIR) = 0.95 P(UNFAIR) = 0.01</p>
-<p><strong>Q6: (15 pts):</strong> You run a die through the test and it says the dice IS faulty. What is the probability it is ACTUALLY faulty?</p>
+<p><strong>Q6: (15 pts):</strong> You run a die through the test and it FAILS the test. What is the probability it is ACTUALLY faulty?</p>
 <p><em>Hint</em> You are calculating P(UNFAIR|FAILS). Look at Bayes up top. A = UNFAIR. B = FAILS.</p>
 <p><em>Second hint</em>: This probability you calculate will likely be lower than what you expected. This is part of the false positive paradox!</p>
 <p><em>Third hint</em>: If you are unsure of where to get started, it may help to look back to the lecture slides and recording from Thursday (2/10). We’re doing the same thing we did with the beetle example.</p>
 <p>It may help to first calculate the following probabilities: P(FAILS|FAIR) = 1-(P(PASS|FAIR)) P(FAIR) = 1-P(UNFAIR)</p>
 <p><strong>Your answer</strong></p>
-<pre class="r"><code># Your calculations here</code></pre>
+<pre class="r"><code>p_fails_given_fair &lt;- (1 - 0.95)
+p_fair &lt;- (1 - .01)</code></pre>
 <p>The company is worried about throwing out good dice and losing profits, and so it is planning to invest for a test that has much better accuracy.</p>
 <p>This new test has sensitivity of 99% and specificity of 99%.</p>
 <p><strong>Q7: (15 pts):</strong> If you ran a die through the new test and it says the dice IS faulty. What is the probability it is ACTUALLY faulty? Is the new test better?</p>
