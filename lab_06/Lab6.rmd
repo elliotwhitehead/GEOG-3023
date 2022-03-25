@@ -1,7 +1,7 @@
 ---
 title: "Lab for GEOG 3023: Statistics for Geography"
 subtitle: "Lab 6: Sampling distributions and Confidence Intervals"
-author: FirstName LastName
+author: Elliot Whitehead
 output: 
   html_document:
     css: "lab.css"
