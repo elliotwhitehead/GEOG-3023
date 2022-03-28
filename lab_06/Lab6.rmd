@@ -41,7 +41,7 @@ library(tidyr)
 
 # We only need this package for function 'rep_sample_n()', please install first 
 # before use by uncommenting and running the below line
-# install.packages('infer')
+install.packages('infer')
 library(infer)
 ```
 
@@ -108,12 +108,12 @@ ames %>%
 
 * The distribution of areas of houses in Ames is unimodal and right-skewed. 
 * 50\% of houses in Ames are larger than 1,499.69 square feet. 
-* The middle 50\% of the houses range between approximately 1,126 square feet and 1,742.7 square feet. 
+* The middle 50\% of the houses range between approximately 1,126 square feet and 1,742.7 square feet.
 * The IQR is approximately 616.7 square feet. 
 * The smallest house is 334 square feet and the largest is 5,642 square feet. 
 
 **Your answer:**
-
+The second bullet, "50\% of houses in Ames are larger than 1,499.69 square feet." is ***false***. In fact, 50% of the homes in Ames are larger than 1442 feet. 
 
 </div>
 
@@ -127,7 +127,7 @@ This will make sure your results don't change each time you knit, and it will al
 ensure reproducibility of your work (by setting the same seed it will be possible to 
 reproduce your results). You can set a seed like this:
 ```{r set-seed}
-set.seed(9102015)                 # make sure to change the seed
+set.seed(91052015)
 ```
 The number above is completely arbitrary. If you need inspiration, you can use your
 birthday or favorite number. You only need to do this once in your R Markdown document,
