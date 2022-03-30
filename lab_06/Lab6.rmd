@@ -301,7 +301,7 @@ print(mean(sample_means_price50$mean_price))
 
 
 ```
-<b>The sample distribution is pretty normally distributed. I would guess the mean home price of the population to be pretty close to $180,000, as the mean of this sample distribution is $180,456.</b>
+<b>The sample distribution is pretty normally distributed, though a little right-skewed. I would guess the mean home price of the population to be pretty close to $180,000, as the mean of this sample distribution is $180,456.</b>
 </div>
 
 <div class="exercise">
@@ -314,9 +314,16 @@ sale price of homes in Ames?
 
 **Your answer**
 ```{r price-sampling-more}
-# type your code here
 
+sample_means_price150 <- ames%>%
+  rep_sample_n(size = 150, reps = 5000, replace = TRUE) %>%
+    summarise(mean_price = mean(price))
+
+hist(sample_means_price150$mean_price, breaks=50)
+
+print(mean(sample_means_price150$mean_price))
 ```
+<b>This distribution is even closer to normal than the distribution using only 50 samples, but also very slightly right-skewed. Given that the mean price from this distribution is $180,822, I would expect the population mean to be closer to $180,800 than my previous estimate of $180,000.</b>
 </div>
 
 <div class="question">
@@ -329,9 +336,12 @@ sale price of homes in Ames?
 
 **Your answer:**
 
-
+<b> False: Both sampling distributions are symmetric</b>
 ```{r price-sampling-compare}
-# type your code here if needed
+
+print(var(sample_means_price150$mean_price))
+
+print(var(sample_means_price50$mean_price))
 
 ```
 </div>
