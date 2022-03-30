@@ -240,11 +240,6 @@ the population mean. Make sure to include a histogram of the distribution in you
 
 <b>There are 15,000 rows in `sample_means50`. Each row represents the mean of a sample taken from the population. The mean of sample_means50 is extremely close the mean of the overall population (only .01% off!). </b>
 
-```{r sampling-dist}
-
-
-```
-
 </div>
 
 ## Interlude: Sampling distributions
@@ -295,10 +290,18 @@ population to be?
 
 **Your answer:**
 ```{r price-sampling}
-# type your code here
+
+sample_means_price50 <- ames%>%
+  rep_sample_n(size = 50, reps = 5000, replace = TRUE) %>%
+    summarise(mean_price = mean(price))
+
+hist(sample_means_price50$mean_price, breaks=50)
+
+print(mean(sample_means_price50$mean_price))
 
 
 ```
+<b>The sample distribution is pretty normally distributed. I would guess the mean home price of the population to be pretty close to $180,000, as the mean of this sample distribution is $180,456.</b>
 </div>
 
 <div class="exercise">
