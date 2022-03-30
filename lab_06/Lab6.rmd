@@ -168,10 +168,18 @@ of the statistics to indicate that these come from the sample.
 **Your answer:**
 
 ```{r samp1-dist}
-# type your code for here
+hist(samp1$area, breaks=50)
 
+samp1 %>%
+  summarise(samp1_mean = mean(area), samp1_med = median(area),
+            samp1_sd = sd(area), samp1_iqr = IQR(area),
+            samp1_min = min(area), samp1_max = max(area),
+            samp1_q1 = quantile(area, 0.25),
+            samp1_q3 = quantile(area, 0.75))
 
 ```
+
+<b> The distribution of the sample is not normal, and is pretty sporadic / spaced out. However, the sample mean is relatively close to the population mean. The sample covers a much smaller range, but maintains a somewhat similar IQR. There are no extreme outliers.</b>
 </div>
 
 
