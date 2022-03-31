@@ -50,6 +50,7 @@ true or false? (3 points)
 
 **Your answer: **
 
+**True**
 
 </div>
 
@@ -77,6 +78,7 @@ statistics. Which one of the following about the CLT is **wrong**? (3 points)
 
 **Your answer:**
 
+**According to CLT, if the sample size is large enough (typically larger than 30), the distribution of sample values will approximately follow a normal distribution**
 
 </div>
 
@@ -367,6 +369,7 @@ Please examine this plot and describe the possible problems with it.  (3 points)
 
 **Your answer:**
 
+The Y-axis is greatly exaggerated, and makes obscures the apparent (squinting as I look at the graph here) 3-4 degree increase in average temperature. 3-4 degrees of global warming is massively impactful an the planet, and this plot seems to be saying that hardly any obsevable change has occurred (a significant increase on a plot at this scale would meen the earth was scorched earth, or an ice cube) 
 
 </div>
 
