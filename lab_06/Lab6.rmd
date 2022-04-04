@@ -420,9 +420,9 @@ sample_250 %>%
 
 **Your answer:**
 
-The confidence interval is **narrower**, because the the sample size is much larger.
+**The confidence interval is <u>narrower</u>, because the the sample size is much larger.
 This means that there is less error in the sampling, and therefore a smaller denominator
-in the calculation of the confidence interval multiplier.
+in the calculation of the confidence interval multiplier.**
 </div>
 
 ## Confidence levels
@@ -551,7 +551,7 @@ Is this proportion exactly equal to the confidence level? If not, explain why.
 
 **Your answer:**
 ```{r find-proportion}
-# type your code here
+
 
 ```
 </div>
