@@ -438,6 +438,7 @@ in the calculation of the confidence interval multiplier.
 
 **Your answer:**
 
+**95% of random samples of size 60 will yield confidence intervals that contain the true average area of houses in Ames, Iowa. **
 
 </div>
 
