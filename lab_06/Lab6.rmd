@@ -41,7 +41,7 @@ library(tidyr)
 
 # We only need this package for function 'rep_sample_n()', please install first 
 # before use by uncommenting and running the below line
-install.packages('infer')
+# install.packages('infer')
 library(infer)
 ```
 
@@ -394,14 +394,24 @@ confident that the true average size of houses in Ames lies between the values *
 and *upper*. As long as our sample size is greater than 30 or so, it doesn't
 matter whether the underlying population is normally distributed or not. 
 
+<div class="question">
 
 **Q7** Calculate a confidence interval from a new random sample of size 250. 
 Is the new confidence interval narrower or wider than the one with sample size 60?
-Why" (Hint: there are two reasons why we would expect the interval to be different) (1-2 sentences)
+Why? (Hint: there are two reasons why we would expect the interval to be different) (1-2 sentences)
 *Note*: You'll have to define a new critical value since your degrees of freedom changed
 
 ```{r}
-# your code here
+tstar_250 <- qt(0.975, 249)
+print(tstar_250)
+
+n_250 <- 250
+sample_250 <- ames %>%
+  sample_n(n_250)
+sample_250 %>%
+  summarise (lower = mean(area) - tstar_250 * (sd(area) / sqrt(n_250)),
+             upper = mean(area) + tstar_250 * (sd(area) / sqrt(n_250))) 
+
 
 ```
 
@@ -409,6 +419,11 @@ Why" (Hint: there are two reasons why we would expect the interval to be differe
 * Narrower
 
 **Your answer:**
+
+The confidence interval is **narrower**, because the the sample size is much larger.
+This means that there is less error in the sampling, and therefore a smaller denominator
+in the calculation of the confidence interval multiplier.
+</div>
 
 ## Confidence levels
 
