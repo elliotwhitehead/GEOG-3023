@@ -1,0 +1,329 @@
+---
+title: "GEOG 3023: Statistics for Geography"
+subtitle: "Lab 7: T Tests"
+author: Elliot Whitehead
+output: 
+  html_document:
+    css: "lab.css"
+---
+
+```{r setup, include=FALSE}
+
+# Setup the environment
+library(knitr)
+knitr::opts_chunk$set(fig.align='center',fig.width=10, fig.height=6, fig.path='Figs/',  warning=FALSE, echo=TRUE, eval=TRUE, message=FALSE)
+
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
+
+```
+
+<div class="instructions">
+
+Please complete the following questions and submit the finished Rmd and
+HTML file onto Canvas. 
+
+Don't forget to change name field in the beginning to your **first and last name**. 
+
+This lab is modified based on [OpenIntro](https://www.openintro.org/stat/labs.php) lab.
+
+</div>
+
+## Getting Started
+
+### IMPORTANT NOTE
+
+**For this entire lab, we'll use a significance level (alpha) of 0.05**
+
+### Load packages
+
+In this lab we will explore the data using the `dplyr` package and
+visualize it using the `R` basic graphics for data visualization. The data
+ ('nc.csv') is enclosed. 
+
+Let's first load the package.
+
+```{r load-packages, message=FALSE}
+library(dplyr)
+```
+
+### The data
+
+In 2004, the state of North Carolina released a large data set containing 
+information on births recorded in this state. This data set is useful to 
+researchers studying the relation between habits and practices of expectant 
+mothers and the birth of their children. We will work with a random sample of 
+observations from this data set.
+
+Load the `nc` data set into our workspace.
+
+```{r load-data}
+nc<-read.csv('./nc.csv')
+```
+
+We have observations on 13 different variables, some categorical and some 
+numerical. The meaning of each variable is as follows.
+
+variable         | description
+---------------- | ---------------------------------------------
+`fage`           | father's age in years.
+`mage`           | mother's age in years.
+`mature`         | maturity status of mother.
+`weeks`          | length of pregnancy in weeks.
+`premie`         | whether the birth was classified as premature (premie) or full-term.
+`visits`         | number of hospital visits during pregnancy.
+`marital`        | whether mother is `married` or `not married` at birth.
+`gained`         | weight gained by mother during pregnancy in pounds.
+`weight`         | weight of the baby at birth in pounds.
+`lowbirthweight` | whether baby was classified as low birthweight (`low`) or not (`not low`).
+`gender`         | gender of the baby, `female` or `male`.
+`habit`          | status of the mother as a `nonsmoker` or a `smoker`.
+`whitemom`       | whether mom is `white` or `not white`.
+
+As a first step in the analysis, we should take a look at the variables in
+the dataset. This can be done using the following commonly used commands:
+
+```{r str}
+
+# show the structure of the data frame
+str(nc)
+
+# display the first few lings of the data frame
+head(nc)
+
+# return the dimension of the data frame
+dim(nc)
+
+# return the column names of the data frame
+colnames(nc)
+```
+
+As you review the variable summaries, consider which variables are categorical and which are numerical. For numerical variables, are there outliers? If you aren't sure or want to take a closer look at the data, make a graph.
+
+## Exploratory data analysis
+
+We will first start with analyzing the weight gained by mothers throughout the 
+pregnancy: `gained`.
+
+Using visualization and summary statistics, describe the distribution of weight 
+gained by mothers during pregnancy. The `summary` function can also be
+useful. Note there are missing values in the dataset. 
+
+```{r summary}
+summary(nc$gained)
+```
+
+Next, consider the possible relationship between a mother's smoking habit and the weight of her baby. Plotting the data is a useful first step because it helps us quickly visualize trends, identify strong associations, and develop research questions.
+
+<div class="question">
+**Q1:** Make side-by-side boxplots of `habit` and `weight`. Which of the following is false about the relationship between habit and weight?
+
+* Median birth weight of babies born to non-smoker mothers is slightly higher than that of babies born to smoker mothers. 
+* Range of birth weights of babies born to non-smoker mothers is smaller than that of babies born to smoker mothers. 
+* The IQRs of the distributions are roughly equal. 
+
+**Your answer:**
+
+
+```{r habit-weight-box}
+
+# type your code here:
+
+
+```
+</div>
+
+The box plots show how the medians of the two distributions compare, but we can also compare the means of the distributions using the following to 
+first group the data by the `habit` variable, and then calculate the mean
+`weight` in these groups using the `mean` function.
+
+```{r by-means}
+nc %>%
+  group_by(habit) %>%
+  summarise(mean_weight = mean(weight))
+```
+
+There is an observed difference, but is this difference statistically 
+significant? In order to answer this question we will conduct a hypothesis 
+test.
+
+## Hypothesis test of population mean
+
+### One-Sample T-Test
+
+<div class="question">
+**Q2**: The mean baby weight in the US is 7.5 lbs. We want to test if, based
+on this sample, the North Carolina mean weight is different from the US average (two-tailed).
+What are the appropriate null and alternative hypotheses for this test?
+
+* $H_0: \mu_{NC} = 7.5$; $H_A: \mu_{NC} > 7.5$ 
+* $H_0: \mu_{NC} = 7.5$; $H_A: \mu_{NC} \ne 7.5$ 
+* $H_0: \bar{x}_{NC} = 7.5$; $H_A: \bar{x}_{NC} >7.5$ 
+* $H_0: \bar{x}_{NC} = 7.5$; $H_A: \bar{x}_{NC} < 7.5$ 
+* $H_0: \mu_{NC} \ne 7.5$;  $H_A: \mu_{NC} = 7.5$ 
+
+
+**Your Answer:**
+
+
+</div>
+
+<div class="question">
+
+**Q3**: Run a 1-sample t-test to determine if, based on this sample, the mean 
+North Carolina baby weight is different from the US average. Interpret the results
+at a 0.05 significance level. Is the NC baby weight different from the US avg?
+
+**Your answer:**
+
+
+```{r}
+# Your code here
+
+```
+</div>
+
+
+### Two-Sample T-Test
+
+<div class="question">
+**Q4:**  What are the hypotheses for testing if the average weights of babies born to smoking and non-smoking mothers are different?
+
+* $H_0: \mu_{smoking} = \mu_{non-smoking}$; $H_A: \mu_{smoking} > \mu_{non-smoking}$ 
+* $H_0: \mu_{smoking} = \mu_{non-smoking}$; $H_A: \mu_{smoking} \ne \mu_{non-smoking}$ 
+* $H_0: \bar{x}_{smoking} = \bar{x}_{non-smoking}$; $H_A: \bar{x}_{smoking} > \bar{x}_{non-smoking}$ 
+* $H_0: \bar{x}_{smoking} = \bar{x}_{non-smoking}$; $H_A: \bar{x}_{smoking} > \bar{x}_{non-smoking}$ 
+* $H_0: \mu_{smoking} \ne \mu_{non-smoking}$;  $H_A: \mu_{smoking} = \mu_{non-smoking}$ 
+
+**Your answer:**
+
+</div>
+
+Before running our test, we first need to know the weights for the `smoker` and `nonsmoker`:
+
+```{r}
+smoker <- nc %>%
+    filter(habit=='smoker')
+
+nonsmoker <- nc %>%
+    filter(habit=='nonsmoker')
+
+```
+
+<div class="question">
+
+**Q5:** Run a two-sample t-test comparing baby weights of smoking and non-smoking mothers.
+Based on the output of, what is the conclusion of the hypothesis test? 
+Are the weights of babies for smoking mothers less than, the same as, or greater than 
+for non-smoking mothers? (After your test, you can calculate the mean of each sample to compare)
+*Note*: Use a significance level of 0.05 when interpreting your result
+
+**Your answer:**
+
+
+```{r}
+
+# Your code here
+
+```
+
+</div>
+
+
+The previous hypothesis is to test if the weights of smoker and nonsmoker are
+different from each other. It is a two-sided test, since it looks for difference 
+in either diretion. If we only want to know if the birthweight of smoker is
+*less than* the birthgweight of non-smokers, we can change the null hypothesis to:
+the birthweight of smoker is *larger or equal* to the the birthweight of non-smoker.
+Remember we mentioned in the lecture the null hypothesis tends to be
+something we'd like to reject. This becomes a single-sided test. In other words:
+
+- $H_0: \mu_{smoking} >= \mu_{non-smoking}$; $H_A: \mu_{smoking} < \mu_{non-smoking}$ 
+
+
+To do this test, we can simply use:
+
+```{r}
+t.test(smoker$weight, nonsmoker$weight, alternative='less')
+```
+
+<div class="question">
+
+**Q6:** Comparing this output with the previous `t.test()`, what do you notice in
+terms of *p-value*?
+
+**Your Answer**:  
+
+
+</div>
+
+
+
+<div class="question">
+ **Q7:** In the dataset, we also know the `gender` of each birth. We'd like to know
+if there is significance differences between `male` and `female`. Please
+formulate your hypothesis, conduct the hypothesis test and describe your
+decision (reject or fail to reject the hypothesis). Use significance level 0.05
+
+**Your answer:**
+
+
+```{r}
+# Please type your code here:
+
+
+```
+
+</div>
+
+## Hypothesis test of population proportions
+
+In the dataset, the column `lowbirthweight` is a categorical variable (true
+or false) indicating if the birth is counted as low birth weight. We can
+see if the proportions of `lowbirthweight` are different for smoker and
+nonsmoker. In this case, we are conducting testing on population proportions.
+
+We haven't covered this in class, but the interpretation is the same as a t-test!
+
+If p < alpha, we reject the null!
+
+We can start by collecting the statistics using the nice function `group_by`
+provided in `dlpyr`:
+
+```{r}
+nc %>%
+  group_by(nc$lowbirthweight, nc$habit) %>%
+  summarise(n())
+```
+
+Based on the collected statistics, the function to perform the test is `prop.test()`:
+
+```{r}
+# for two-sided test
+prop.test(c(92,18), c(781+92,108+18))
+
+# for single-sided test
+prop.test(c(92,18), c(781+92,108+18), alternative='less')
+
+```
+
+
+<div class="question">
+**Q8:** Based on the output of `prop.test()`, what is the conclusion of the hypothesis test?
+*Note*: Use a significance level (alpha) of 0.05
+
+**Your answer:**
+
+
+</div>
+
+## Summary: new commands in this lab
+
+* `t.test()`, a function for generic hypothesis testing 
+* `prop.test()`, test on proportions
+* Review functions (`group_by()`, `filter()`) in the `dlpyr` package
+
+
+
+
