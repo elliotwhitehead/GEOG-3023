@@ -80,7 +80,7 @@ sales visually and with summary statistics. Let's first create a visualization,
 a histogram:
 
 ```{r area-hist}
-hist(ames$area, breaks=50)
+hist(ames$area, breaks=50, main="Home Sizes in Ames", xlab="Area (Sq Ft)")
 ```
 
 Let's also obtain some summary statistics. Note that we can do this using the
@@ -168,7 +168,7 @@ of the statistics to indicate that these come from the sample.
 **Your answer:**
 
 ```{r samp1-dist}
-hist(samp1$area, breaks=50)
+hist(samp1$area, breaks=50, main="Sample of Home Area in Ames", xlab="Area (Sq Ft)")
 
 samp1 %>%
   summarise(samp1_mean = mean(area), samp1_med = median(area),
@@ -222,7 +222,7 @@ sample_means50 <- ames %>%
                     rep_sample_n(size = 50, reps = 15000, replace = TRUE) %>%
                     summarise(x_bar = mean(area))
 
-hist(sample_means50$x_bar, breaks=50)
+hist(sample_means50$x_bar, breaks=50, main="Distribution of 50 Sample Means of Home Size in Ames", xlab="Sample Mean Home Size (Sq Ft)")
 
 print(mean(sample_means50$x_bar))
 ```
@@ -295,8 +295,7 @@ sample_means_price50 <- ames%>%
   rep_sample_n(size = 50, reps = 5000, replace = TRUE) %>%
     summarise(mean_price = mean(price))
 
-hist(sample_means_price50$mean_price, breaks=50)
-
+hist(sample_means_price50$mean_price, breaks=50, main="Distribution of Sample Mean of Home Price in Ames", xlab="Sample Mean Home Price (USD)")
 print(mean(sample_means_price50$mean_price))
 
 
@@ -319,8 +318,7 @@ sample_means_price150 <- ames%>%
   rep_sample_n(size = 150, reps = 5000, replace = TRUE) %>%
     summarise(mean_price = mean(price))
 
-hist(sample_means_price150$mean_price, breaks=50)
-
+hist(sample_means_price150$mean_price, breaks=50, main="Distribution of Sample Mean of Home Price in Ames", xlab="Sample Mean Home Price (USD)")
 print(mean(sample_means_price150$mean_price))
 ```
 <b>This distribution is even closer to normal than the distribution using only 50 samples, but also very slightly right-skewed. Given that the mean price from this distribution is $180,822, I would expect the population mean to be closer to $180,800 than my previous estimate of $180,000.</b>
@@ -566,17 +564,21 @@ level of 95%.**
 
 <div class="question">
 **Q10** What is the appropriate critical value for a 99% confidence level for 
-t-distribution with 59 degree of freedom? Use qt() to find the appropriate value
+t-distribution with 59 degrees of freedom? Use qt() to find the appropriate value
 
 * 0.01 
 * 0.99  
 * 1.96 
 * 2.20 
 * 2.66 
+
 **Your answer:**
 ```{r find-99-perc-crit-val}
-
+n = 60
+t_star_99 <- qt(0.995, df = n-1)
+print(t_star_99)
 ```
+**=> 2.66**
 </div>
 
 
@@ -587,9 +589,26 @@ and find the proportion for which the population mean lies within the interval.
 **Your answer:**
 
 ```{r plot-99-perc-cis}
-# type your code for the Exercise here, and Knit
 
+ci_99 <- ames %>%
+        rep_sample_n(size = n, reps = 50, replace = TRUE) %>%
+        summarise(lower = mean(area) - t_star_99 * (sd(area) / sqrt(n)),
+                  upper = mean(area) + t_star_99 * (sd(area) / sqrt(n)))
 
+ci_99 <- ci_99 %>%
+  mutate(capture_mu = ifelse(lower < params$mu & upper > params$mu, "yes", "no"))
+
+ci_data_99 <- gather(ci_99, type, bound, lower:upper)
+
+total_capture_99 <- (sum(ci_data_99$capture_mu == "yes"))
+proportion_caught_99 <- (total_capture_99 / nrow(ci_data_99))
+print(proportion_caught_99)
+
+ggplot(data = ci_data_99, aes(x = bound, y = replicate, 
+                           group = replicate, color = capture_mu)) +
+  geom_point(size = 2) +  # add points at the ends, size = 2
+  geom_line() +           # connect with lines
+  geom_vline(xintercept = params$mu, color = "darkgray") # draw vertical line
 ```
 
 </div>
