@@ -551,9 +551,16 @@ Is this proportion exactly equal to the confidence level? If not, explain why.
 
 **Your answer:**
 ```{r find-proportion}
-
-
+total_capture <- (sum(ci_data$capture_mu == "yes") / 2)
+proportion_caught <- (total_capture / (nrow(ci_data) / 2))
+print(proportion_caught)
 ```
+**Only 90% of these confidence intervals contain the true population mean. This
+is less than the expected 95% of the confidence level, probably because the 
+sample size of the sampling distribution (50) is quite small. For example, I 
+cranked this test up 1,000,000 samples (yes, it took a very long time to run),
+and the resulting capture proportion (94.595%) was much closer to the confidence
+level of 95%.**
 </div>
 
 
@@ -568,7 +575,6 @@ t-distribution with 59 degree of freedom? Use qt() to find the appropriate value
 * 2.66 
 **Your answer:**
 ```{r find-99-perc-crit-val}
-# type your code here
 
 ```
 </div>

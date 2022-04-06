@@ -450,6 +450,11 @@ ci &lt;- ames %&gt;%
 <div class="exercise">
 <p><strong>Q9</strong> What proportion of your confidence intervals include the true population mean? Is this proportion exactly equal to the confidence level? If not, explain why.</p>
 <p><strong>Your answer:</strong></p>
+<pre class="r"><code>total_capture &lt;- (sum(ci_data$capture_mu == &quot;yes&quot;) / 2)
+proportion_caught &lt;- (total_capture / (nrow(ci_data) / 2))
+print(proportion_caught)</code></pre>
+<pre><code>## [1] 0.9</code></pre>
+<p><strong>Only 90% of these confidence intervals contain the true population mean. This is less than the expected 95% of the confidence level, probably because the sample size of the sampling distribution (50) is quite small. For example, I cranked this test up 1,000,000 samples (yes, it took a very long time to run), and the resulting capture proportion (94.595%) was much closer to the confidence level of 95%.</strong></p>
 </div>
 <div class="question">
 <p><strong>Q10</strong> What is the appropriate critical value for a 99% confidence level for t-distribution with 59 degree of freedom? Use qt() to find the appropriate value</p>
@@ -461,7 +466,6 @@ ci &lt;- ames %&gt;%
 <li>2.20</li>
 <li>2.66 <strong>Your answer:</strong></li>
 </ul>
-<pre class="r"><code># type your code here</code></pre>
 </div>
 <div class="question">
 <p><strong>Q11</strong> Based on the previous code, please calculate 50 confidence intervals at the 99% confidence level, and find the proportion for which the population mean lies within the interval.</p>
