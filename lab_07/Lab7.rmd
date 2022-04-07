@@ -46,6 +46,7 @@ Let's first load the package.
 
 ```{r load-packages, message=FALSE}
 library(dplyr)
+library(ggplot2)
 ```
 
 ### The data
@@ -112,6 +113,7 @@ useful. Note there are missing values in the dataset.
 
 ```{r summary}
 summary(nc$gained)
+summary(nc$habit)
 ```
 
 Next, consider the possible relationship between a mother's smoking habit and the weight of her baby. Plotting the data is a useful first step because it helps us quickly visualize trends, identify strong associations, and develop research questions.
@@ -127,11 +129,15 @@ Next, consider the possible relationship between a mother's smoking habit and th
 
 
 ```{r habit-weight-box}
+# Clean data from NA values for habit
+nc_clean <- na.omit(nc)
 
-# type your code here:
-
-
+ggplot(nc_clean) + aes(x=habit, y=weight, fill=habit) + geom_boxplot()
 ```
+
+<br>
+**False: Range of birth weights of babies born to non-smoker mothers is smaller than that of babies born to smoker mothers.**
+
 </div>
 
 The box plots show how the medians of the two distributions compare, but we can also compare the means of the distributions using the following to 
@@ -166,6 +172,7 @@ What are the appropriate null and alternative hypotheses for this test?
 
 **Your Answer:**
 
+$H_0: \mu_{NC} = 7.5$; $H_A: \mu_{NC} \ne 7.5$
 
 </div>
 
@@ -179,9 +186,10 @@ at a 0.05 significance level. Is the NC baby weight different from the US avg?
 
 
 ```{r}
-# Your code here
-
+t.test(nc_clean$weight, mu=7.5)
 ```
+**Our p-value is much smaller than our alpha of 0.05, so we can reject the null
+hypothesis and assume that the mean NC baby weight is different than from the US avg.**
 </div>
 
 
