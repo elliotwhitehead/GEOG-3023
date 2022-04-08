@@ -206,6 +206,7 @@ hypothesis and assume that the mean NC baby weight is different than from the US
 
 **Your answer:**
 
+$H_0: \mu_{smoking} = \mu_{non-smoking}$; $H_A: \mu_{smoking} \ne \mu_{non-smoking}$
 </div>
 
 Before running our test, we first need to know the weights for the `smoker` and `nonsmoker`:
@@ -232,10 +233,12 @@ for non-smoking mothers? (After your test, you can calculate the mean of each sa
 
 ```{r}
 
-# Your code here
+t.test(nonsmoker$weight, smoker$weight)
+print(mean(smoker$weight))
+print(mean(nonsmoker$weight))
 
 ```
-
+**The conclusion of the two-sample test is that we can reject the null hypothesis, AKA, the mean brithweight is not the same between smoking and non-smoking mothers**
 </div>
 
 

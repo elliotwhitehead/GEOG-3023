@@ -392,6 +392,7 @@ ggplot(nc_clean) + aes(x=habit, y=weight, fill=habit) + geom_boxplot()</code></p
 <li><span class="math inline">\(H_0: \mu_{smoking} \ne \mu_{non-smoking}\)</span>; <span class="math inline">\(H_A: \mu_{smoking} = \mu_{non-smoking}\)</span></li>
 </ul>
 <p><strong>Your answer:</strong></p>
+<p><span class="math inline">\(H_0: \mu_{smoking} = \mu_{non-smoking}\)</span>; <span class="math inline">\(H_A: \mu_{smoking} \ne \mu_{non-smoking}\)</span></p>
 </div>
 <p>Before running our test, we first need to know the weights for the <code>smoker</code> and <code>nonsmoker</code>:</p>
 <pre class="r"><code>smoker &lt;- nc %&gt;%
@@ -402,7 +403,23 @@ nonsmoker &lt;- nc %&gt;%
 <div class="question">
 <p><strong>Q5:</strong> Run a two-sample t-test comparing baby weights of smoking and non-smoking mothers. Based on the output of, what is the conclusion of the hypothesis test? Are the weights of babies for smoking mothers less than, the same as, or greater than for non-smoking mothers? (After your test, you can calculate the mean of each sample to compare) <em>Note</em>: Use a significance level of 0.05 when interpreting your result</p>
 <p><strong>Your answer:</strong></p>
-<pre class="r"><code># Your code here</code></pre>
+<pre class="r"><code>t.test(nonsmoker$weight, smoker$weight)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  nonsmoker$weight and smoker$weight
+## t = 2.359, df = 171.32, p-value = 0.01945
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.05151165 0.57957328
+## sample estimates:
+## mean of x mean of y 
+##  7.144273  6.828730</code></pre>
+<pre class="r"><code>print(mean(smoker$weight))</code></pre>
+<pre><code>## [1] 6.82873</code></pre>
+<pre class="r"><code>print(mean(nonsmoker$weight))</code></pre>
+<pre><code>## [1] 7.144273</code></pre>
+<p><strong>The conclusion of the two-sample test is that we can reject the null hypothesis, AKA, the mean brithweight is not the same between smoking and non-smoking mothers</strong></p>
 </div>
 <p>The previous hypothesis is to test if the weights of smoker and nonsmoker are different from each other. It is a two-sided test, since it looks for difference in either diretion. If we only want to know if the birthweight of smoker is <em>less than</em> the birthgweight of non-smokers, we can change the null hypothesis to: the birthweight of smoker is <em>larger or equal</em> to the the birthweight of non-smoker. Remember we mentioned in the lecture the null hypothesis tends to be something we’d like to reject. This becomes a single-sided test. In other words:</p>
 <ul>
