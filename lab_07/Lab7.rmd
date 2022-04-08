@@ -238,7 +238,7 @@ print(mean(smoker$weight))
 print(mean(nonsmoker$weight))
 
 ```
-**The conclusion of the two-sample test is that we can reject the null hypothesis, AKA, the mean brithweight is not the same between smoking and non-smoking mothers**
+**The conclusion of the two-sample test is that we can reject the null hypothesis, AKA, the mean brithweight is not the same between smoking and non-smoking mothers. THe mean birthweight for smoking mothers is lower than that for nonsmoking mothers.**
 </div>
 
 
