@@ -403,18 +403,18 @@ nonsmoker &lt;- nc %&gt;%
 <div class="question">
 <p><strong>Q5:</strong> Run a two-sample t-test comparing baby weights of smoking and non-smoking mothers. Based on the output of, what is the conclusion of the hypothesis test? Are the weights of babies for smoking mothers less than, the same as, or greater than for non-smoking mothers? (After your test, you can calculate the mean of each sample to compare) <em>Note</em>: Use a significance level of 0.05 when interpreting your result</p>
 <p><strong>Your answer:</strong></p>
-<pre class="r"><code>t.test(nonsmoker$weight, smoker$weight)</code></pre>
+<pre class="r"><code>t.test(smoker$weight, nonsmoker$weight)</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
-## data:  nonsmoker$weight and smoker$weight
-## t = 2.359, df = 171.32, p-value = 0.01945
+## data:  smoker$weight and nonsmoker$weight
+## t = -2.359, df = 171.32, p-value = 0.01945
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  0.05151165 0.57957328
+##  -0.57957328 -0.05151165
 ## sample estimates:
 ## mean of x mean of y 
-##  7.144273  6.828730</code></pre>
+##  6.828730  7.144273</code></pre>
 <pre class="r"><code>print(mean(smoker$weight))</code></pre>
 <pre><code>## [1] 6.82873</code></pre>
 <pre class="r"><code>print(mean(nonsmoker$weight))</code></pre>
@@ -423,7 +423,7 @@ nonsmoker &lt;- nc %&gt;%
 </div>
 <p>The previous hypothesis is to test if the weights of smoker and nonsmoker are different from each other. It is a two-sided test, since it looks for difference in either diretion. If we only want to know if the birthweight of smoker is <em>less than</em> the birthgweight of non-smokers, we can change the null hypothesis to: the birthweight of smoker is <em>larger or equal</em> to the the birthweight of non-smoker. Remember we mentioned in the lecture the null hypothesis tends to be something we’d like to reject. This becomes a single-sided test. In other words:</p>
 <ul>
-<li><span class="math inline">\(H_0: \mu_{smoking} &gt;= \mu_{non-smoking}\)</span>; <span class="math inline">\(H_A: \mu_{smoking} &lt; \mu_{non-smoking}\)</span></li>
+<li><span class="math inline">\(H_{0}: \mu_{smoking} \ge \mu_{non-smoking}\)</span>; <span class="math inline">\(H_A: \mu_{smoking} \lt \mu_{non-smoking}\)</span></li>
 </ul>
 <p>To do this test, we can simply use:</p>
 <pre class="r"><code>t.test(smoker$weight, nonsmoker$weight, alternative=&#39;less&#39;)</code></pre>
@@ -441,11 +441,31 @@ nonsmoker &lt;- nc %&gt;%
 <div class="question">
 <p><strong>Q6:</strong> Comparing this output with the previous <code>t.test()</code>, what do you notice in terms of <em>p-value</em>?</p>
 <p><strong>Your Answer</strong>:</p>
+<p><strong>The p-value is even lower than our previous test, giving us more confidence to reject the null hypothesis!</strong></p>
 </div>
 <div class="question">
 <p><strong>Q7:</strong> In the dataset, we also know the <code>gender</code> of each birth. We’d like to know if there is significance differences between <code>male</code> and <code>female</code>. Please formulate your hypothesis, conduct the hypothesis test and describe your decision (reject or fail to reject the hypothesis). Use significance level 0.05</p>
 <p><strong>Your answer:</strong></p>
-<pre class="r"><code># Please type your code here:</code></pre>
+<p><span class="math inline">\(H_0: \mu_{male} \le \mu_{female}\)</span>; <span class="math inline">\(H_A: \mu_{male} \gt \mu_{female}\)</span></p>
+<pre class="r"><code>boys &lt;- nc_clean %&gt;%
+  filter(gender==&quot;male&quot;)
+
+girls &lt;- nc_clean %&gt;%
+  filter(gender==&quot;female&quot;)
+
+t.test(boys$weight, girls$weight, alternative=&#39;greater&#39;)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  boys$weight and girls$weight
+## t = 3.9316, df = 795.85, p-value = 4.587e-05
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  0.230821      Inf
+## sample estimates:
+## mean of x mean of y 
+##  7.410000  7.012815</code></pre>
+<p><strong>Based on the p-value of my one-tailed t-test, I can pretty confidently reject the null hypothesis, with a p-value of ~0.00004587. Therefore, it seems quite likely that male babies weigh more than female babies on average.</strong></p>
 </div>
 </div>
 </div>

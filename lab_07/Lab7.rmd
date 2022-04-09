@@ -233,14 +233,13 @@ for non-smoking mothers? (After your test, you can calculate the mean of each sa
 
 ```{r}
 
-t.test(nonsmoker$weight, smoker$weight)
+t.test(smoker$weight, nonsmoker$weight)
 print(mean(smoker$weight))
 print(mean(nonsmoker$weight))
 
 ```
 **The conclusion of the two-sample test is that we can reject the null hypothesis, AKA, the mean brithweight is not the same between smoking and non-smoking mothers. THe mean birthweight for smoking mothers is lower than that for nonsmoking mothers.**
 </div>
-
 
 The previous hypothesis is to test if the weights of smoker and nonsmoker are
 different from each other. It is a two-sided test, since it looks for difference 
@@ -250,7 +249,7 @@ the birthweight of smoker is *larger or equal* to the the birthweight of non-smo
 Remember we mentioned in the lecture the null hypothesis tends to be
 something we'd like to reject. This becomes a single-sided test. In other words:
 
-- $H_0: \mu_{smoking} >= \mu_{non-smoking}$; $H_A: \mu_{smoking} < \mu_{non-smoking}$ 
+- $H_{0}: \mu_{smoking} \ge \mu_{non-smoking}$; $H_A: \mu_{smoking} \lt \mu_{non-smoking}$ 
 
 
 To do this test, we can simply use:
@@ -266,6 +265,7 @@ terms of *p-value*?
 
 **Your Answer**:  
 
+**The p-value is even lower than our previous test, giving us more confidence to reject the null hypothesis!**
 
 </div>
 
@@ -279,12 +279,22 @@ decision (reject or fail to reject the hypothesis). Use significance level 0.05
 
 **Your answer:**
 
-
+$H_0: \mu_{male} \le \mu_{female}$; $H_A: \mu_{male} \gt \mu_{female}$ 
 ```{r}
-# Please type your code here:
 
+boys <- nc_clean %>%
+  filter(gender=="male")
+
+girls <- nc_clean %>%
+  filter(gender=="female")
+
+t.test(boys$weight, girls$weight, alternative='greater')
 
 ```
+
+**Based on the p-value of my one-tailed t-test, I can pretty confidently reject
+the null hypothesis, with a p-value of ~0.00004587. Therefore, it seems quite likely
+that male babies weigh more than female babies on average.**
 
 </div>
 
