@@ -336,6 +336,7 @@ prop.test(c(92,18), c(781+92,108+18), alternative='less')
 
 **Your answer:**
 
+**Based on the outcome of the `prop.test`, the test failed to reject the null hypothesis.**
 
 </div>
 
