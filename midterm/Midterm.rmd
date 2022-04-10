@@ -105,6 +105,7 @@ coefficient, which one of the following statements is **wrong**? (3 points)
 
 **Your answer:**
 
+**False: It means the temperature drops cause the increase of COVID-19 cases**
 
 
 </div>
