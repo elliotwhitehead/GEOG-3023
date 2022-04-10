@@ -123,14 +123,14 @@ independent. Calculate the following probabilities. You can round your answer to
 
 **Your answer:**
 
+$\frac{1}{3}\cdot\frac{1}{3} \Rightarrow \frac{1}{9} = 0.11$
 
 
 **B.** The probability of flipping the coin three times and *not* getting a heads (3 points)
 
-
-
 **Your answer:**
 
+$\frac{2}{3}\cdot\frac{2}{3} \Rightarrow \frac{4}{9} = 0.44$
 
 **C.** The probability of flipping the coin three times and getting exactly one of each 
 outcome (heads, tails, and arms). Be sure to show your work and/or explain how you came to the answer
@@ -138,7 +138,10 @@ outcome (heads, tails, and arms). Be sure to show your work and/or explain how y
 
 **Your answer:**
 
+$\frac{3}{3}\cdot\frac{2}{3}\cdot\frac{1}{3}\Rightarrow\frac{2}{9}=0.22$
 
+**With each successive flip, there is one less possible landing which would 
+satisfy uniqueness from previous flips.**
 
 
 </div>
