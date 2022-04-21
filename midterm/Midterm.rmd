@@ -155,7 +155,7 @@ The enclosed csv file ('ColoradoCounty.csv') contains the COVID-19
 related statistics for all Colorado counties. The column
 `County_Rate_Per_100_1000` indicate the positive rate for each county
 (number of positive cases per 100,000 population) and the column `COUNTY`
-names of each county. Treat this dataset as a **sample**
+names of each county. Treat this dataset as a **sample**.
 Based on this dataset, please answer the following questions:
 
 **A.** What are the mean, median, and standard deviation of the
@@ -168,7 +168,13 @@ the question.  (7 points)
 # load the csv file
 coloradoCovid<- read.csv('./ColoradoCounty.csv')
 
-# type your code here to answer the question
+covid_mean <- mean(coloradoCovid$County_Rate_Per_100_000)
+print(covid_mean) 
+covid_median <- median(coloradoCovid$County_Rate_Per_100_000)
+print(covid_median)
+covid_sd <- sd(coloradoCovid$County_Rate_Per_100_000)
+print(covid_sd)
+
 
 ```
 
@@ -184,10 +190,17 @@ You can use R to answer the question. (7 points)
 # load the csv file
 coloradoCovid<- read.csv('./ColoradoCounty.csv')
 
-# type your code here to answer the question
+# load e1071 package for skewness
+#install.packages('e1071', dependencies = TRUE)
+library(e1071)  
 
+hist(coloradoCovid$County_Rate_Per_100_000, breaks=20, main="Distribution of County Positivity Counts per 100K", xlab="Positive Count per 100K")
+skewness(coloradoCovid$County_Rate_Per_100_000)
 
 ```
+**The distribution is right-skewed with a kurtosis of 1.855. The vast majority
+of the sample is clustered between 250-2000, with the mode being in the rage of
+600-800. There is an extreme outlier, Logan County with 4932.92 cases per 100K.**
 
 **C.** We are interested in knowing how Boulder county stands in the state. The
 positive rate for Boulder county is 1527.06. Please calculate what
@@ -200,9 +213,15 @@ R to answer the question. (7 points)
 # load the csv file
 coloradoCovid<- read.csv('./ColoradoCounty.csv')
 
-# type your code here to answer the question
+total_counties <-nrow(coloradoCovid)
+
+counties_lt_boulder <- sum(coloradoCovid$County_Rate_Per_100_000 < 1527.06)
+counties_lt_boulder
+
+print(counties_lt_boulder / total_counties)
 
 ```
+**About 73.44% of counties have a lower positive rate than Boulder.**
  
  </div>
 
