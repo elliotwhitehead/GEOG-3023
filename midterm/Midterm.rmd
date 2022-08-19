@@ -268,19 +268,20 @@ about the population mean? (7 points)
 
 ### Question 7
 
-In the ColoradoCounty.csv file, the variable `Rural` says whether the county is rural or not. 
-"1" means it is rural, "0" means it is urban.
+In the ColoradoCounty.csv file, the variable `Rural` says whether the county is rural or not. "1" means it is rural, "0" means it is urban.
 
 
-**A.** Write appropriate null and alternative hypotheses for comparing the mean positivity
-rate  (column 'County_Rate_Per_100_1000') between rural and urban counties (5 points)
+**A.** Write appropriate null and alternative hypotheses for comparing the mean positivity rate  (column 'County_Rate_Per_100_1000') between rural and urban counties (5 points)
 
 **Your answer:**
 
+**<i>Null Hypothesis:</i> The mean positivity rate between rural and urban counties is the same.**
 
 
-**B.** Run a two-sample t-test comparing the positivity rate for rural vs urban counties. 
-Interpret the result with alpha=0.05. Can we reject the null hypothesis? 
+**<i>Alternative Hypothesis:</i> The mean positivity rate between rural and urban counties is not the same.**
+
+
+**B.** Run a two-sample t-test comparing the positivity rate for rural vs urban counties. Interpret the result with alpha=0.05. Can we reject the null hypothesis? 
 Is the mean positivity rate different between rural and urban counties? (9 points)
 
 **Your answer:**
@@ -290,8 +291,8 @@ Is the mean positivity rate different between rural and urban counties? (9 point
 # load the csv file
 coloradoCovid<- read.csv('./ColoradoCounty.csv')
 
-
-# add your code here:
+rural <- coloradoCovid[coloradoCovid$Rural==1,]
+urban <- coloradoCovid[coloradoCovid$Rural==0,]
 
 
 ```
