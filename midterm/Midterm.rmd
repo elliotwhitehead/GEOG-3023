@@ -243,8 +243,14 @@ of the Colorado state. You can use R code to answer the question. (7 points)
 
 # load the csv file
 coloradoCovid<- read.csv('./ColoradoCounty.csv')
+mu <- mean(coloradoCovid$County_Rate_Per_100_000)
+sd <- sd(coloradoCovid$County_Rate_Per_100_000)
+n <- length(coloradoCovid$County_Rate_Per_100_000)
 
-# add your code here:
+print(mu)
+print(upper <- mu + (1.96*sd/sqrt(n)))
+print(lower <- mu - (1.96*sd/sqrt(n)))
+
 
 ```
 
@@ -252,7 +258,7 @@ coloradoCovid<- read.csv('./ColoradoCounty.csv')
 about the population mean? (7 points)
 
 **Your answer:**
-
+**This tells us that the mean of samples taken from this population would be contained in 912.2343 < mu < 1309.736, 95% of the time.**
 
 
 </div>
@@ -392,7 +398,7 @@ Please examine this plot and describe the possible problems with it.  (3 points)
 
 **Your answer:**
 
-The Y-axis is greatly exaggerated, and makes obscures the apparent (squinting as I look at the graph here) 3-4 degree increase in average temperature. 3-4 degrees of global warming is massively impactful an the planet, and this plot seems to be saying that hardly any obsevable change has occurred (a significant increase on a plot at this scale would meen the earth was scorched earth, or an ice cube) 
+**The Y-axis is greatly exaggerated, and makes obscures the apparent (squinting as I look at the graph here) 3-4 degree increase in average temperature. 3-4 degrees of global warming has a massive impact on the planet, and this plot seems to be saying that hardly any observable change has occurred (a significant increase on a plot at this scale would mean the earth was scorched earth, or an ice cube) **
 
 </div>
 
